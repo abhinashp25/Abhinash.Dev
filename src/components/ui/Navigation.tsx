@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const navLinks = [
@@ -56,8 +57,8 @@ export default function Navigation() {
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="relative group"
         >
-          <div className="w-10 h-10 rounded-xl glass neon-border flex items-center justify-center group-hover:shadow-glow transition-all duration-300">
-            <span className="text-lg font-bold gradient-text font-jakarta">AP</span>
+          <div className="w-10 h-10 rounded-xl overflow-hidden group-hover:shadow-glow transition-all duration-300">
+            <Image src="/assets/images/logo.svg" alt="AP Logo" width={40} height={40} className="w-full h-full" />
           </div>
         </button>
 
@@ -80,7 +81,7 @@ export default function Navigation() {
         {/* CTA */}
         <div className="hidden md:flex items-center gap-3">
           <a
-            href="https://github.com/abhinashpradhan"
+            href="https://github.com/abhinashp25"
             target="_blank"
             rel="noopener noreferrer"
             className="px-4 py-2 rounded-lg glass neon-border text-sm font-medium text-slate-300 hover:text-white hover:shadow-glow transition-all duration-300"

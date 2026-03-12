@@ -66,9 +66,9 @@ const commands: Record<string, string[]> = {
   contact: [
     '> Loading contact info...',
     '',
-    '  ✉  Email   : abhinash@example.com',
-    '  ⚡ GitHub  : github.com/abhinashpradhan',
-    '  💼 LinkedIn: linkedin.com/in/abhinashpradhan',
+    '  ✉  Email   : abhinashpradhan7658@gmail.com',
+    '  ⚡ GitHub  : github.com/abhinashp25',
+    '  💼 LinkedIn: linkedin.com/in/abhinash-pradhan-74b389294',
     '',
     '  Feel free to reach out for collaborations,',
     '  job opportunities, or just to say hello!',

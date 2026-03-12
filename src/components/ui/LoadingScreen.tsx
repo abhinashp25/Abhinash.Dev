@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 export default function LoadingScreen() {
   const [progress, setProgress] = useState(0);
@@ -38,8 +39,8 @@ export default function LoadingScreen() {
       <div className="relative z-10 flex flex-col items-center gap-8">
         {/* Logo */}
         <div className="relative">
-          <div className="w-24 h-24 rounded-2xl glass neon-border flex items-center justify-center animate-pulse-glow">
-            <span className="text-4xl font-bold gradient-text font-jakarta">AP</span>
+          <div className="w-24 h-24 rounded-2xl overflow-hidden animate-pulse-glow">
+            <Image src="/assets/images/logo.svg" alt="AP Logo" width={96} height={96} className="w-full h-full" priority />
           </div>
           <div className="absolute -inset-2 rounded-2xl border border-brand-500/20 animate-spin-slow" />
         </div>

@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { EnvelopeIcon, CodeBracketIcon, UserIcon } from '@heroicons/react/24/outline';
 
-
 export default function ContactSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -40,52 +39,56 @@ export default function ContactSection() {
     }
     setErrors({});
     setIsSubmitting(true);
+
+    const subject = encodeURIComponent('Portfolio Contact from ' + form.name);
+    const body = encodeURIComponent(
+      'Hi Abhinash,\n\nName: ' + form.name + '\nEmail: ' + form.email + '\n\nMessage:\n' + form.message
+    );
+    window.open('mailto:abhinashpradhan7658@gmail.com?subject=' + subject + '&body=' + body, '_blank');
+
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
       setForm({ name: '', email: '', message: '' });
-    }, 1500);
+    }, 800);
   };
 
   const socialLinks = [
     {
       label: 'GitHub',
-      href: 'https://github.com/abhinashpradhan',
+      href: 'https://github.com/abhinashp25',
       icon: CodeBracketIcon,
       color: '#6366f1',
-      username: '@abhinashpradhan',
+      username: '@abhinashp25',
     },
     {
       label: 'LinkedIn',
-      href: 'https://linkedin.com/in/abhinashpradhan',
+      href: 'https://www.linkedin.com/in/abhinash-pradhan-74b389294/',
       icon: UserIcon,
       color: '#06b6d4',
       username: 'Abhinash Pradhan',
     },
     {
       label: 'Email',
-      href: 'mailto:abhinash@example.com',
+      href: 'mailto:abhinashpradhan7658@gmail.com',
       icon: EnvelopeIcon,
       color: '#f472b6',
-      username: 'abhinash@example.com',
+      username: 'abhinashpradhan7658@gmail.com',
     },
   ];
 
   return (
     <section id="contact" ref={sectionRef} className="relative py-24 px-6">
-      {/* Background grid */}
       <div className="absolute inset-0 grid-pattern opacity-20 pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
-        {/* Header */}
         <div className={`mb-16 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="flex items-center gap-3 mb-4">
             <div className="h-px flex-1 max-w-12 bg-gradient-to-r from-transparent to-brand-500" />
             <span className="text-brand-400 font-mono text-sm tracking-widest uppercase">Contact</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-white">
-            Let's{' '}
-            <span className="gradient-text">Connect</span>
+            Let's <span className="gradient-text">Connect</span>
           </h2>
           <p className="text-slate-400 mt-4 max-w-xl text-lg">
             Have a project in mind or want to collaborate? I'd love to hear from you.
@@ -93,7 +96,6 @@ export default function ContactSection() {
         </div>
 
         <div className="grid lg:grid-cols-5 gap-12">
-          {/* Form — 3 cols */}
           <div
             className={`lg:col-span-3 transition-all duration-700 ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}
             style={{ transitionDelay: '200ms' }}
@@ -105,7 +107,12 @@ export default function ContactSection() {
                   <EnvelopeIcon className="w-8 h-8 text-brand-400" />
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-2">Message Sent!</h3>
-                <p className="text-slate-400">Thanks for reaching out. I'll get back to you soon.</p>
+                <p className="text-slate-400 text-sm max-w-xs">
+                  Your email client should have opened. If not, reach me directly at{' '}
+                  <a href="mailto:abhinashpradhan7658@gmail.com" className="text-brand-400 hover:underline">
+                    abhinashpradhan7658@gmail.com
+                  </a>
+                </p>
                 <button
                   onClick={() => setSubmitted(false)}
                   className="mt-6 px-4 py-2 rounded-lg glass neon-border text-sm text-slate-300 hover:text-white transition-colors"
@@ -115,12 +122,12 @@ export default function ContactSection() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Name */}
                 <div className="relative">
                   <label
                     className={`absolute left-4 transition-all duration-300 pointer-events-none font-mono text-sm ${
                       focused === 'name' || form.name
-                        ? '-top-2.5 text-xs text-brand-400 bg-dark-900 px-1' :'top-3.5 text-slate-500'
+                        ? '-top-2.5 text-xs text-brand-400 bg-dark-900 px-1'
+                        : 'top-3.5 text-slate-500'
                     }`}
                   >
                     Your Name
@@ -132,20 +139,20 @@ export default function ContactSection() {
                     onFocus={() => setFocused('name')}
                     onBlur={() => setFocused(null)}
                     className={`w-full bg-dark-800 rounded-xl px-4 py-3.5 text-white font-mono text-sm outline-none transition-all duration-300 ${
-                      focused === 'name' ?'border border-brand-500 shadow-glow'
-                        : errors.name
-                        ? 'border border-red-500/50' :'border border-dark-700 hover:border-dark-600'
+                      focused === 'name' ? 'border border-brand-500 shadow-glow'
+                        : errors.name ? 'border border-red-500/50'
+                        : 'border border-dark-700 hover:border-dark-600'
                     }`}
                   />
                   {errors.name && <p className="text-red-400 text-xs font-mono mt-1 ml-1">{errors.name}</p>}
                 </div>
 
-                {/* Email */}
                 <div className="relative">
                   <label
                     className={`absolute left-4 transition-all duration-300 pointer-events-none font-mono text-sm ${
                       focused === 'email' || form.email
-                        ? '-top-2.5 text-xs text-cyber-400 bg-dark-900 px-1' :'top-3.5 text-slate-500'
+                        ? '-top-2.5 text-xs text-cyber-400 bg-dark-900 px-1'
+                        : 'top-3.5 text-slate-500'
                     }`}
                   >
                     Email Address
@@ -157,20 +164,20 @@ export default function ContactSection() {
                     onFocus={() => setFocused('email')}
                     onBlur={() => setFocused(null)}
                     className={`w-full bg-dark-800 rounded-xl px-4 py-3.5 text-white font-mono text-sm outline-none transition-all duration-300 ${
-                      focused === 'email' ?'border border-cyber-500 shadow-glow-cyan'
-                        : errors.email
-                        ? 'border border-red-500/50' :'border border-dark-700 hover:border-dark-600'
+                      focused === 'email' ? 'border border-cyber-500 shadow-glow-cyan'
+                        : errors.email ? 'border border-red-500/50'
+                        : 'border border-dark-700 hover:border-dark-600'
                     }`}
                   />
                   {errors.email && <p className="text-red-400 text-xs font-mono mt-1 ml-1">{errors.email}</p>}
                 </div>
 
-                {/* Message */}
                 <div className="relative">
                   <label
                     className={`absolute left-4 transition-all duration-300 pointer-events-none font-mono text-sm ${
                       focused === 'message' || form.message
-                        ? '-top-2.5 text-xs text-neon-400 bg-dark-900 px-1' :'top-3.5 text-slate-500'
+                        ? '-top-2.5 text-xs text-neon-400 bg-dark-900 px-1'
+                        : 'top-3.5 text-slate-500'
                     }`}
                   >
                     Your Message
@@ -182,9 +189,9 @@ export default function ContactSection() {
                     onBlur={() => setFocused(null)}
                     rows={5}
                     className={`w-full bg-dark-800 rounded-xl px-4 py-3.5 text-white font-mono text-sm outline-none transition-all duration-300 resize-none ${
-                      focused === 'message' ?'border border-neon-500 shadow-glow-pink'
-                        : errors.message
-                        ? 'border border-red-500/50' :'border border-dark-700 hover:border-dark-600'
+                      focused === 'message' ? 'border border-neon-500 shadow-glow-pink'
+                        : errors.message ? 'border border-red-500/50'
+                        : 'border border-dark-700 hover:border-dark-600'
                     }`}
                   />
                   {errors.message && <p className="text-red-400 text-xs font-mono mt-1 ml-1">{errors.message}</p>}
@@ -199,7 +206,7 @@ export default function ContactSection() {
                   {isSubmitting ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Sending...
+                      Opening email client...
                     </>
                   ) : (
                     <>
@@ -212,7 +219,6 @@ export default function ContactSection() {
             )}
           </div>
 
-          {/* Contact info — 2 cols */}
           <div
             className={`lg:col-span-2 space-y-6 transition-all duration-700 ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}
             style={{ transitionDelay: '300ms' }}

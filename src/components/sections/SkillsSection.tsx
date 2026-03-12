@@ -2,14 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-interface Skill {
-  name: string;
-  description: string;
-  color: string;
-  size: number;
-  x: number;
-  y: number;
-}
 
 const skillsData = [
   { name: 'Python', description: 'Primary language for ML & automation', color: '#6366f1', size: 80 },

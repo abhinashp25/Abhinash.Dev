@@ -1,13 +1,14 @@
 'use client';
 
 import { CodeBracketIcon, EnvelopeIcon, UserIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
 
 
 export default function Footer() {
   const socialLinks = [
-    { href: 'https://github.com/abhinashpradhan', icon: CodeBracketIcon, label: 'GitHub', color: '#6366f1' },
-    { href: 'https://linkedin.com/in/abhinashpradhan', icon: UserIcon, label: 'LinkedIn', color: '#06b6d4' },
-    { href: 'mailto:abhinash@example.com', icon: EnvelopeIcon, label: 'Email', color: '#f472b6' },
+    { href: 'https://github.com/abhinashp25', icon: CodeBracketIcon, label: 'GitHub', color: '#6366f1' },
+    { href: 'https://www.linkedin.com/in/abhinash-pradhan-74b389294/', icon: UserIcon, label: 'LinkedIn', color: '#06b6d4' },
+    { href: 'mailto:abhinashpradhan7658@gmail.com', icon: EnvelopeIcon, label: 'Email', color: '#f472b6' },
   ];
 
   return (
@@ -43,8 +44,8 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             {/* Logo & tagline */}
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-xl glass neon-border flex items-center justify-center">
-                <span className="text-lg font-bold gradient-text font-jakarta">AP</span>
+              <div className="w-10 h-10 rounded-xl overflow-hidden">
+                <Image src="/assets/images/logo.svg" alt="AP Logo" width={40} height={40} className="w-full h-full" />
               </div>
               <div>
                 <p className="text-white font-semibold text-sm">Abhinash Pradhan</p>
@@ -88,7 +89,7 @@ export default function Footer() {
               Built with passion and modern web technologies.
             </p>
             <p className="text-slate-600 text-xs font-mono">
-              © 2024 Abhinash Pradhan
+              © 2025 Abhinash Pradhan
             </p>
           </div>
         </div>

@@ -2,53 +2,65 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import Icon from '@/components/ui/AppIcon';
 
 export default function NotFound() {
-    const router = useRouter();
+  const router = useRouter();
 
-    const handleGoHome = () => {
-        router?.push('/');
-    };
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-dark-900 px-6">
+      {/* Background orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          className="absolute w-[400px] h-[400px] rounded-full opacity-10"
+          style={{ background: 'radial-gradient(circle, #6366f1 0%, transparent 70%)', top: '20%', left: '20%' }}
+        />
+        <div
+          className="absolute w-[300px] h-[300px] rounded-full opacity-10"
+          style={{ background: 'radial-gradient(circle, #06b6d4 0%, transparent 70%)', bottom: '20%', right: '20%' }}
+        />
+      </div>
 
-    const handleGoBack = () => {
-        if (typeof window !== 'undefined') {
-            window.history?.back();
-        }
-    };
-
-    return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
-            <div className="text-center max-w-md">
-                <div className="flex justify-center mb-6">
-                    <div className="relative">
-                        <h1 className="text-9xl font-bold text-primary opacity-20">404</h1>
-                    </div>
-                </div>
-
-                <h2 className="text-2xl font-medium text-onBackground mb-2">Page Not Found</h2>
-                <p className="text-onBackground/70 mb-8">
-                    The page you're looking for doesn't exist. Let's get you back!
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button
-                        onClick={handleGoBack}
-                        className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-200"
-                    >
-                        <Icon name="ArrowLeftIcon" size={16} />
-                        Go Back
-                    </button>
-
-                    <button
-                        onClick={handleGoHome}
-                        className="inline-flex items-center justify-center gap-2 border border-border bg-background text-foreground px-6 py-3 rounded-lg font-medium hover:bg-accent hover:text-accent-foreground transition-colors duration-200"
-                    >
-                        <Icon name="HomeIcon" size={16} />
-                        Back to Home
-                    </button>
-                </div>
-            </div>
+      <div className="relative z-10 text-center max-w-md">
+        {/* 404 number */}
+        <div className="mb-6">
+          <h1 className="text-9xl font-bold font-jakarta"
+            style={{
+              background: 'linear-gradient(135deg, #6366f1, #06b6d4, #f472b6)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
+            404
+          </h1>
         </div>
-    );
+
+        {/* Logo */}
+        <div className="w-16 h-16 rounded-2xl glass neon-border flex items-center justify-center mx-auto mb-6 animate-pulse-glow">
+          <span className="text-2xl font-bold gradient-text font-jakarta">AP</span>
+        </div>
+
+        <h2 className="text-2xl font-bold text-white mb-3">Page Not Found</h2>
+        <p className="text-slate-400 mb-8 font-mono text-sm">
+          Looks like this page got lost in the void. Let's get you back on track.
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            onClick={() => router.back()}
+            className="px-6 py-3 rounded-xl font-semibold glass neon-border text-slate-300 hover:text-white hover:shadow-glow transition-all duration-300 hover:scale-105 font-mono text-sm"
+          >
+            ← Go Back
+          </button>
+          <button
+            onClick={() => router.push('/')}
+            className="px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300 hover:shadow-glow-lg hover:scale-105 font-mono text-sm"
+            style={{ background: 'linear-gradient(135deg, #6366f1, #4f46e5)' }}
+          >
+            Back to Home
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
