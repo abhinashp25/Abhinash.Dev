@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-
+import { motion, AnimatePresence } from 'framer-motion';
 
 const skillsData = [
   { name: 'Python', description: 'Primary language for ML & automation', color: '#6366f1', size: 80 },
@@ -36,38 +36,23 @@ const skillCategories = [
 ];
 
 export default function SkillsSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
   const [skills, setSkills] = useState<(typeof skillsData[0] & { x: number; y: number })[]>([]);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.1 }
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
     const placed: { x: number; y: number; size: number }[] = [];
-    const containerW = 900;
-    const containerH = 520;
-
+    const W = 900, H = 520;
     const positioned = skillsData.map((skill) => {
-      let x = 0, y = 0;
-      let attempts = 0;
+      let x = 0, y = 0, attempts = 0;
       do {
-        x = skill.size / 2 + 20 + Math.random() * (containerW - skill.size - 40);
-        y = skill.size / 2 + 20 + Math.random() * (containerH - skill.size - 40);
+        x = skill.size / 2 + 20 + Math.random() * (W - skill.size - 40);
+        y = skill.size / 2 + 20 + Math.random() * (H - skill.size - 40);
         attempts++;
       } while (
         attempts < 150 &&
         placed.some((p) => {
-          const dx = p.x - x;
-          const dy = p.y - y;
+          const dx = p.x - x, dy = p.y - y;
           return Math.sqrt(dx * dx + dy * dy) < (p.size + skill.size) / 2 + 15;
         })
       );
@@ -77,29 +62,24 @@ export default function SkillsSection() {
     setSkills(positioned);
   }, []);
 
-  const isHighlighted = (skillName: string) => {
+  const isHighlighted = (name: string) => {
     if (!activeCategory) return true;
     const cat = skillCategories.find((c) => c.label === activeCategory);
-    return cat ? cat.skills.includes(skillName) : true;
+    return cat ? cat.skills.includes(name) : true;
   };
 
   return (
-    <section id="skills" ref={sectionRef} className="relative py-24 px-6 overflow-hidden">
-      {/* Background */}
+    <section id="skills" className="relative py-24 px-6 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full opacity-5"
-          style={{ background: 'radial-gradient(circle, #6366f1 0%, transparent 70%)' }}
-        />
-        <div
-          className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full opacity-5"
-          style={{ background: 'radial-gradient(circle, #06b6d4 0%, transparent 70%)' }}
-        />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full opacity-5"
+          style={{ background: 'radial-gradient(circle, #6366f1 0%, transparent 70%)' }} />
       </div>
 
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className={`mb-10 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <motion.div className="mb-10"
+          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.7 }}>
           <div className="flex items-center gap-3 mb-4">
             <div className="h-px flex-1 max-w-12 bg-gradient-to-r from-transparent to-cyan-500" />
             <span className="text-cyan-400 font-mono text-sm tracking-widest uppercase">Skills Galaxy</span>
@@ -109,34 +89,31 @@ export default function SkillsSection() {
             <span style={{ color: '#06b6d4', textShadow: '0 0 20px rgba(6,182,212,0.6)' }}>Universe</span>
           </h2>
           <p className="text-slate-400 mt-4 max-w-xl text-lg">
-            Hover over each skill orb to explore my expertise. Filter by category below.
+            Hover over each skill orb to explore. Filter by category below.
           </p>
-        </div>
+        </motion.div>
 
         {/* Category filters */}
-        <div
-          className={`flex flex-wrap gap-2 mb-8 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-          style={{ transitionDelay: '100ms' }}
-        >
-          <button
+        <motion.div className="flex flex-wrap gap-2 mb-8"
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
+          <motion.button
             onClick={() => setActiveCategory(null)}
-            className={`px-3 py-1.5 rounded-full text-xs font-mono transition-all duration-300 ${
-              !activeCategory ? 'text-white' : 'text-slate-400 hover:text-white'
-            }`}
+            whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
+            className={`px-3 py-1.5 rounded-full text-xs font-mono transition-all duration-300 ${!activeCategory ? 'text-white' : 'text-slate-400 hover:text-white'}`}
             style={{
               background: !activeCategory ? 'rgba(99,102,241,0.3)' : 'rgba(255,255,255,0.04)',
               border: `1px solid ${!activeCategory ? 'rgba(99,102,241,0.6)' : 'rgba(255,255,255,0.08)'}`,
             }}
           >
             All Skills
-          </button>
+          </motion.button>
           {skillCategories.map((cat) => (
-            <button
+            <motion.button
               key={cat.label}
               onClick={() => setActiveCategory(activeCategory === cat.label ? null : cat.label)}
-              className={`px-3 py-1.5 rounded-full text-xs font-mono transition-all duration-300 ${
-                activeCategory === cat.label ? 'text-white' : 'text-slate-400 hover:text-white'
-              }`}
+              whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
+              className={`px-3 py-1.5 rounded-full text-xs font-mono transition-all duration-300 ${activeCategory === cat.label ? 'text-white' : 'text-slate-400 hover:text-white'}`}
               style={{
                 background: activeCategory === cat.label ? `${cat.color}30` : 'rgba(255,255,255,0.04)',
                 border: `1px solid ${activeCategory === cat.label ? `${cat.color}60` : 'rgba(255,255,255,0.08)'}`,
@@ -144,154 +121,132 @@ export default function SkillsSection() {
               }}
             >
               {cat.label}
-            </button>
+            </motion.button>
           ))}
-        </div>
+        </motion.div>
 
-        {/* Skills galaxy container */}
-        <div
-          className={`relative w-full rounded-3xl overflow-hidden transition-all duration-700 ${
-            visible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-          }`}
+        {/* Galaxy */}
+        <motion.div
+          className="relative w-full rounded-3xl overflow-hidden"
           style={{
             height: '520px',
-            transitionDelay: '200ms',
             background: 'rgba(15,23,42,0.8)',
             border: '1px solid rgba(99,102,241,0.15)',
             boxShadow: '0 0 60px rgba(99,102,241,0.05), inset 0 0 60px rgba(0,0,0,0.3)',
           }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Space background */}
           <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-dark-900 to-slate-900" />
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: 'radial-gradient(rgba(99,102,241,0.06) 1px, transparent 1px)',
-              backgroundSize: '40px 40px',
-            }}
-          />
+          <div className="absolute inset-0"
+            style={{ backgroundImage: 'radial-gradient(rgba(99,102,241,0.06) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
-          {/* Skill orbs */}
-          {skills.map((skill, i) => {
-            const isHovered = hoveredSkill === skill.name;
-            const highlighted = isHighlighted(skill.name);
-            const floatDelay = `${(i * 0.5) % 6}s`;
-            const floatDuration = `${5 + (i % 4)}s`;
+          <AnimatePresence>
+            {skills.map((skill, i) => {
+              const isHovered = hoveredSkill === skill.name;
+              const highlighted = isHighlighted(skill.name);
 
-            return (
-              <div
-                key={skill.name}
-                className="absolute transition-all duration-500"
-                style={{
-                  left: `${(skill.x / 900) * 100}%`,
-                  top: `${(skill.y / 520) * 100}%`,
-                  transform: 'translate(-50%, -50%)',
-                  zIndex: isHovered ? 20 : 10,
-                  opacity: highlighted ? 1 : 0.2,
-                }}
-              >
-                {/* Tooltip */}
-                {isHovered && (
-                  <div
-                    className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 rounded-xl px-3 py-2 whitespace-nowrap z-30 pointer-events-none"
-                    style={{
-                      background: 'rgba(15,23,42,0.95)',
-                      border: `1px solid ${skill.color}50`,
-                      boxShadow: `0 0 20px ${skill.color}30`,
-                      backdropFilter: 'blur(10px)',
-                    }}
-                  >
-                    <p className="text-white text-xs font-semibold">{skill.name}</p>
-                    <p className="text-slate-400 text-xs mt-0.5 max-w-[180px] whitespace-normal">{skill.description}</p>
-                    <div
-                      className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0"
-                      style={{
-                        borderLeft: '5px solid transparent',
-                        borderRight: '5px solid transparent',
-                        borderTop: `5px solid ${skill.color}50`,
-                      }}
-                    />
-                  </div>
-                )}
-
-                {/* Orb */}
-                <div
-                  className="rounded-full flex items-center justify-center cursor-pointer transition-all duration-300"
-                  style={{
-                    width: skill.size,
-                    height: skill.size,
-                    background: `radial-gradient(circle at 35% 35%, ${skill.color}50, ${skill.color}15)`,
-                    border: `1px solid ${skill.color}${isHovered ? '90' : '35'}`,
-                    boxShadow: isHovered
-                      ? `0 0 30px ${skill.color}70, 0 0 60px ${skill.color}30, inset 0 0 20px ${skill.color}20`
-                      : `0 0 12px ${skill.color}25`,
-                    transform: isHovered ? 'scale(1.35)' : 'scale(1)',
-                    animation: `float ${floatDuration} ease-in-out infinite`,
-                    animationDelay: floatDelay,
-                  }}
-                  onMouseEnter={() => setHoveredSkill(skill.name)}
-                  onMouseLeave={() => setHoveredSkill(null)}
+              return (
+                <motion.div
+                  key={skill.name}
+                  className="absolute"
+                  style={{ left: `${(skill.x / 900) * 100}%`, top: `${(skill.y / 520) * 100}%`, transform: 'translate(-50%, -50%)' }}
+                  animate={{ opacity: highlighted ? 1 : 0.15 }}
+                  transition={{ duration: 0.35 }}
                 >
-                  <span
-                    className="font-bold font-mono text-center px-1 leading-tight"
-                    style={{
-                      color: skill.color,
-                      fontSize: skill.size > 65 ? '11px' : skill.size > 50 ? '9px' : '8px',
-                    }}
-                  >
-                    {skill.name}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
+                  {/* Tooltip */}
+                  <AnimatePresence>
+                    {isHovered && (
+                      <motion.div
+                        className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 rounded-xl px-3 py-2 whitespace-nowrap z-30 pointer-events-none"
+                        style={{
+                          background: 'rgba(15,23,42,0.96)',
+                          border: `1px solid ${skill.color}50`,
+                          boxShadow: `0 0 20px ${skill.color}30`,
+                          backdropFilter: 'blur(10px)',
+                        }}
+                        initial={{ opacity: 0, y: 6, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 4, scale: 0.9 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <p className="text-white text-xs font-semibold">{skill.name}</p>
+                        <p className="text-slate-400 text-xs mt-0.5 max-w-[180px] whitespace-normal">{skill.description}</p>
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0"
+                          style={{ borderLeft: '5px solid transparent', borderRight: '5px solid transparent', borderTop: `5px solid ${skill.color}50` }} />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
 
-          {/* Corner label */}
+                  {/* Orb */}
+                  <motion.div
+                    className="rounded-full flex items-center justify-center cursor-pointer"
+                    style={{
+                      width: skill.size,
+                      height: skill.size,
+                      background: `radial-gradient(circle at 35% 35%, ${skill.color}50, ${skill.color}15)`,
+                      border: `1px solid ${skill.color}${isHovered ? '90' : '35'}`,
+                      animation: `float ${5 + (i % 4)}s ease-in-out infinite`,
+                      animationDelay: `${(i * 0.5) % 6}s`,
+                    }}
+                    animate={{
+                      scale: isHovered ? 1.35 : 1,
+                      boxShadow: isHovered
+                        ? `0 0 30px ${skill.color}70, 0 0 60px ${skill.color}30, inset 0 0 20px ${skill.color}20`
+                        : `0 0 12px ${skill.color}25`,
+                    }}
+                    transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+                    onMouseEnter={() => setHoveredSkill(skill.name)}
+                    onMouseLeave={() => setHoveredSkill(null)}
+                  >
+                    <span
+                      className="font-bold font-mono text-center px-1 leading-tight select-none"
+                      style={{ color: skill.color, fontSize: skill.size > 65 ? '11px' : skill.size > 50 ? '9px' : '8px' }}
+                    >
+                      {skill.name}
+                    </span>
+                  </motion.div>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+
           <div className="absolute bottom-4 right-4 text-xs font-mono text-slate-600 flex items-center gap-1.5">
             <div className="w-1.5 h-1.5 rounded-full bg-slate-600 animate-pulse" />
             Hover to explore
           </div>
-          <div className="absolute top-4 left-4 text-xs font-mono text-slate-700">
-            {skillsData.length} skills
-          </div>
-        </div>
+          <div className="absolute top-4 left-4 text-xs font-mono text-slate-700">{skillsData.length} skills</div>
+        </motion.div>
 
-        {/* Skill tags grid */}
-        <div
-          className={`mt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 transition-all duration-700 ${
-            visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-          style={{ transitionDelay: '400ms' }}
-        >
+        {/* Category grid */}
+        <motion.div
+          className="mt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}>
           {skillCategories.map((cat) => (
-            <div
+            <motion.div
               key={cat.label}
-              className="rounded-2xl p-4 transition-all duration-300 hover:-translate-y-1"
-              style={{
-                background: 'rgba(255,255,255,0.02)',
-                border: `1px solid ${cat.color}20`,
-              }}
+              whileHover={{ y: -4 }}
+              className="rounded-2xl p-4 transition-all duration-300"
+              style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${cat.color}20` }}
             >
-              <div
-                className="text-xs font-mono font-bold mb-3 tracking-widest uppercase"
-                style={{ color: cat.color }}
-              >
+              <div className="text-xs font-mono font-bold mb-3 tracking-widest uppercase" style={{ color: cat.color }}>
                 {cat.label}
               </div>
               <div className="space-y-1.5">
                 {cat.skills.map((s) => (
                   <div key={s} className="flex items-center gap-2">
-                    <div
-                      className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                      style={{ background: cat.color, boxShadow: `0 0 4px ${cat.color}` }}
-                    />
+                    <div className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                      style={{ background: cat.color, boxShadow: `0 0 4px ${cat.color}` }} />
                     <span className="text-xs text-slate-400 font-mono">{s}</span>
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

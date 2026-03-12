@@ -11,6 +11,7 @@ const navLinks = [
   { label: 'AI Lab', href: '#ailab' },
   { label: 'Terminal', href: '#terminal' },
   { label: 'Experience', href: '#experience' },
+  { label: 'Certs', href: '#certifications' },
   { label: 'Contact', href: '#contact' },
 ];
 

@@ -2,118 +2,95 @@
 
 import { useEffect, useRef } from 'react';
 
-interface Particle {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  size: number;
-  opacity: number;
-  color: string;
-}
-
 export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<Particle[]>([]);
-  const mouseRef = useRef({ x: 0, y: 0 });
   const animRef = useRef<number>(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
 
-    const colors = ['#6366f1', '#06b6d4', '#f472b6', '#818cf8'];
+    let scene: any, camera: any, renderer: any, group: any;
+    let mouseX = 0, mouseY = 0;
 
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resize();
-    window.addEventListener('resize', resize);
+    const init = async () => {
+      const THREE = await import('three');
 
-    const initParticles = () => {
-      particlesRef.current = Array.from({ length: 80 }, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        size: Math.random() * 2 + 0.5,
-        opacity: Math.random() * 0.5 + 0.1,
-        color: colors[Math.floor(Math.random() * colors.length)],
-      }));
-    };
-    initParticles();
+      const w = window.innerWidth;
+      const h = window.innerHeight;
 
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY };
-    };
-    window.addEventListener('mousemove', handleMouseMove);
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 200);
+      camera.position.z = 40;
 
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
+      renderer.setSize(w, h);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
-      particlesRef.current.forEach((p, i) => {
-        // Mouse attraction
-        const dx = mouseRef.current.x - p.x;
-        const dy = mouseRef.current.y - p.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 150) {
-          p.vx += (dx / dist) * 0.02;
-          p.vy += (dy / dist) * 0.02;
+      // Create 3 particle layers — brand palette
+      const createLayer = (count: number, hex: number, spread: number, size: number) => {
+        const geo = new THREE.BufferGeometry();
+        const pos = new Float32Array(count * 3);
+        for (let i = 0; i < count * 3; i++) {
+          pos[i] = (Math.random() - 0.5) * spread;
         }
+        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        const mat = new THREE.PointsMaterial({
+          color: hex,
+          size,
+          transparent: true,
+          opacity: 0.75,
+          sizeAttenuation: true,
+          depthWrite: false,
+        });
+        return new THREE.Points(geo, mat);
+      };
 
-        // Speed limit
-        const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-        if (speed > 2) {
-          p.vx = (p.vx / speed) * 2;
-          p.vy = (p.vy / speed) * 2;
-        }
+      group = new THREE.Group();
+      group.add(createLayer(700, 0x6366f1, 120, 0.12)); // indigo
+      group.add(createLayer(450, 0x06b6d4, 150, 0.09)); // cyan
+      group.add(createLayer(250, 0xf472b6, 90, 0.10));  // pink
 
-        p.x += p.vx;
-        p.y += p.vy;
+      scene.add(group);
 
-        // Wrap around
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
+      const onMouseMove = (e: MouseEvent) => {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 0.6;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 0.6;
+      };
+      const onResize = () => {
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
+      };
 
-        // Draw particle
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = p.opacity;
-        ctx.fill();
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('resize', onResize);
 
-        // Connect nearby particles
-        for (let j = i + 1; j < particlesRef.current.length; j++) {
-          const p2 = particlesRef.current[j];
-          const dx2 = p.x - p2.x;
-          const dy2 = p.y - p2.y;
-          const dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-          if (dist2 < 100) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = '#6366f1';
-            ctx.globalAlpha = (1 - dist2 / 100) * 0.15;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-        ctx.globalAlpha = 1;
-      });
+      let t = 0;
+      const animate = () => {
+        animRef.current = requestAnimationFrame(animate);
+        t += 0.0004;
+        group.rotation.y = t + mouseX * 0.3;
+        group.rotation.x = t * 0.3 + mouseY * 0.2;
+        renderer.render(scene, camera);
+      };
+      animate();
 
-      animRef.current = requestAnimationFrame(draw);
+      return () => {
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('resize', onResize);
+      };
     };
-    draw();
+
+    let cleanup: (() => void) | undefined;
+    init().then(fn => { cleanup = fn; });
 
     return () => {
-      window.removeEventListener('resize', resize);
-      window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(animRef.current);
+      cleanup?.();
+      renderer?.dispose?.();
     };
   }, []);
 
@@ -121,7 +98,7 @@ export default function ParticleBackground() {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-0"
-      style={{ opacity: 0.6 }}
+      style={{ opacity: 0.55 }}
     />
   );
 }

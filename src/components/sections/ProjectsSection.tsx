@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { ArrowTopRightOnSquareIcon, CodeBracketIcon, XMarkIcon, StarIcon } from '@heroicons/react/24/outline';
+import { useRef, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowTopRightOnSquareIcon, CodeBracketIcon, XMarkIcon, StarIcon, PlayIcon } from '@heroicons/react/24/outline';
 
 interface Project {
   title: string;
@@ -20,8 +21,7 @@ const projects: Project[] = [
   {
     title: 'Payment Date Prediction',
     description: 'ML model predicting invoice payment dates with 87% accuracy.',
-    longDescription:
-      'Built a machine learning pipeline that analyzes historical invoice data to predict payment dates. Uses feature engineering on customer behavior, invoice amounts, and seasonal patterns. Achieved 87% accuracy using gradient boosting with XGBoost. Deployed as a REST API with Flask for real-time predictions.',
+    longDescription: 'Built a machine learning pipeline that analyzes historical invoice data to predict payment dates. Uses feature engineering on customer behavior, invoice amounts, and seasonal patterns. Achieved 87% accuracy using gradient boosting with XGBoost. Deployed as a REST API with Flask for real-time predictions.',
     tech: ['Python', 'scikit-learn', 'Pandas', 'XGBoost', 'Flask'],
     color: '#6366f1',
     github: 'https://github.com/abhinashp25',
@@ -32,8 +32,7 @@ const projects: Project[] = [
   {
     title: 'Plant Disease Prediction',
     description: 'AI/ML system detecting plant diseases from leaf images using deep learning.',
-    longDescription:
-      'An intelligent plant disease detection system that analyzes leaf images to identify diseases with high accuracy. Built using Convolutional Neural Networks (CNN) with transfer learning. Helps farmers and agricultural professionals quickly diagnose crop diseases, potentially saving significant crop losses. The model is trained on thousands of plant images across multiple disease categories.',
+    longDescription: 'An intelligent plant disease detection system that analyzes leaf images to identify diseases with high accuracy. Built using Convolutional Neural Networks (CNN) with transfer learning. Helps farmers and agricultural professionals quickly diagnose crop diseases. Trained on thousands of plant images across multiple disease categories.',
     tech: ['Python', 'TensorFlow', 'CNN', 'OpenCV', 'Deep Learning', 'Flask'],
     color: '#4ade80',
     github: 'https://github.com/abhinashp25/Plant_Disease_Prediction',
@@ -42,10 +41,9 @@ const projects: Project[] = [
     stats: 'AI Powered',
   },
   {
-    title: 'Chatify — Realtime Chat App',
-    description: 'Full-stack real-time messaging application with modern UI and Socket.io.',
-    longDescription:
-      'A production-ready real-time chat application built with React and Socket.io. Features include instant messaging, user authentication, room management, typing indicators, and a clean modern interface. Built for sub-100ms message delivery latency. The backend uses Node.js with Express and MongoDB for message persistence.',
+    title: 'Chatify — Realtime Chat',
+    description: 'Full-stack real-time messaging app with Socket.io and modern UI.',
+    longDescription: 'A production-ready real-time chat application built with React and Socket.io. Features instant messaging, user authentication, room management, typing indicators, and a clean modern interface. Built for sub-100ms message delivery latency. Backend uses Node.js with Express and MongoDB for message persistence.',
     tech: ['React', 'Node.js', 'Socket.io', 'Express', 'MongoDB', 'JWT'],
     color: '#818cf8',
     github: 'https://github.com/abhinashp25/chatify',
@@ -55,8 +53,7 @@ const projects: Project[] = [
   {
     title: 'Global Currency Detection AI',
     description: 'AI system detecting world currencies from images using deep learning.',
-    longDescription:
-      'Developed a computer vision system that identifies and classifies currency notes from 50+ countries. Uses a custom CNN architecture with transfer learning from ResNet. Integrated OCR for serial number extraction and denomination recognition. Achieves high accuracy across diverse lighting conditions and image qualities.',
+    longDescription: 'Developed a computer vision system that identifies and classifies currency notes from 50+ countries. Uses a custom CNN architecture with transfer learning from ResNet. Integrated OCR for serial number extraction and denomination recognition. Achieves high accuracy across diverse lighting conditions.',
     tech: ['Python', 'TensorFlow', 'OpenCV', 'OCR', 'ResNet', 'Deep Learning'],
     color: '#06b6d4',
     github: 'https://github.com/abhinashp25',
@@ -66,8 +63,7 @@ const projects: Project[] = [
   {
     title: 'AI Course Recommender',
     description: 'Intelligent course recommendation system powered by collaborative filtering.',
-    longDescription:
-      'A collaborative filtering and content-based recommendation engine for online courses. Analyzes user learning patterns, skill gaps, and course content to provide personalized recommendations. Built with Streamlit for rapid deployment and an intuitive UI. Uses NLP for course content analysis and similarity matching.',
+    longDescription: 'A collaborative filtering and content-based recommendation engine for online courses. Analyzes user learning patterns, skill gaps, and course content to provide personalized recommendations. Built with Streamlit for rapid deployment. Uses NLP for course content analysis and similarity matching.',
     tech: ['Python', 'ML', 'Streamlit', 'NLP', 'Pandas', 'scikit-learn'],
     color: '#f472b6',
     github: 'https://github.com/abhinashp25',
@@ -77,8 +73,7 @@ const projects: Project[] = [
   {
     title: 'Factory Telemetry Analysis',
     description: 'Industrial IoT data analytics dashboard for factory monitoring.',
-    longDescription:
-      'Comprehensive analytics platform for factory floor telemetry data. Processes sensor readings from 200+ IoT devices, detects anomalies using statistical methods, and provides predictive maintenance alerts. Features real-time dashboards with Plotly visualizations. Reduced equipment downtime by 30% in testing environments.',
+    longDescription: 'Comprehensive analytics platform for factory floor telemetry data. Processes sensor readings from 200+ IoT devices, detects anomalies using statistical methods, and provides predictive maintenance alerts. Features real-time dashboards with Plotly visualizations. Reduced equipment downtime by 30% in testing.',
     tech: ['Python', 'SQL', 'Pandas', 'Plotly', 'IoT', 'Data Analytics'],
     color: '#22d3ee',
     github: 'https://github.com/abhinashp25',
@@ -87,276 +82,315 @@ const projects: Project[] = [
   },
 ];
 
-export default function ProjectsSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [filter, setFilter] = useState<string>('All');
+const categories = ['All', 'Machine Learning', 'Computer Vision', 'Full Stack', 'Data Analytics', 'Recommendation System'];
 
-  const categories = ['All', 'Machine Learning', 'Computer Vision', 'Full Stack', 'Data Analytics', 'Recommendation System'];
+// 3D tilt handlers
+function useTilt() {
+  const ref = useRef<HTMLDivElement>(null);
 
-  const filteredProjects = filter === 'All' ? projects : projects.filter((p) => p.category === filter);
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    ref.current.style.transition = 'transform 0.1s ease';
+    ref.current.style.transform = `perspective(900px) rotateX(${-y * 10}deg) rotateY(${x * 10}deg) translateZ(8px) scale(1.025)`;
+  };
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.1 }
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
+  const onLeave = () => {
+    if (!ref.current) return;
+    ref.current.style.transition = 'transform 0.55s cubic-bezier(0.16,1,0.3,1)';
+    ref.current.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) translateZ(0px) scale(1)';
+  };
+
+  return { ref, onMove, onLeave };
+}
+
+function ProjectCard({ project, index, onClick }: { project: Project; index: number; onClick: () => void }) {
+  const { ref, onMove, onLeave } = useTilt();
+  const [hovered, setHovered] = useState(false);
 
   return (
-    <section id="projects" ref={sectionRef} className="relative py-24 px-6 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 pointer-events-none">
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.6, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <div
+        ref={ref}
+        onMouseMove={onMove}
+        onMouseLeave={onLeave}
+        onMouseEnter={() => setHovered(true)}
+        onMouseOut={() => setHovered(false)}
+        onClick={onClick}
+        className="group relative rounded-2xl overflow-hidden cursor-pointer"
+        style={{
+          background: 'rgba(255,255,255,0.02)',
+          border: `1px solid ${hovered ? project.color + '50' : project.color + '20'}`,
+          boxShadow: hovered ? `0 0 40px ${project.color}20, 0 20px 60px rgba(0,0,0,0.4)` : 'none',
+          transition: 'border-color 0.3s, box-shadow 0.3s',
+        }}
+      >
+        {/* Top accent line */}
         <div
-          className="absolute bottom-0 left-1/4 w-[500px] h-[500px] rounded-full opacity-5"
-          style={{ background: 'radial-gradient(circle, #f472b6 0%, transparent 70%)' }}
+          className="absolute top-0 left-0 right-0 h-0.5 transition-all duration-500"
+          style={{
+            background: `linear-gradient(90deg, transparent, ${project.color}${hovered ? 'cc' : '50'}, transparent)`,
+            boxShadow: hovered ? `0 0 10px ${project.color}80` : 'none',
+          }}
         />
+
+        {/* Hover glow overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none transition-opacity duration-500"
+          style={{
+            opacity: hovered ? 1 : 0,
+            background: `radial-gradient(ellipse at 50% 0%, ${project.color}10, transparent 65%)`,
+          }}
+        />
+
+        <div className="relative z-10 p-6">
+          {/* Top row */}
+          <div className="flex items-center justify-between mb-4">
+            <span
+              className="text-xs font-mono px-2 py-1 rounded-full"
+              style={{ background: `${project.color}15`, color: project.color, border: `1px solid ${project.color}30` }}
+            >
+              {project.category}
+            </span>
+            <div className="flex items-center gap-2">
+              {project.stats && (
+                <span className="text-xs font-mono text-slate-500 flex items-center gap-1">
+                  <StarIcon className="w-3 h-3" style={{ color: project.color }} />
+                  {project.stats}
+                </span>
+              )}
+              <ArrowTopRightOnSquareIcon
+                className="w-4 h-4 text-slate-600 group-hover:text-slate-300 transition-colors"
+              />
+            </div>
+          </div>
+
+          <h3 className="text-lg font-bold text-white mb-2 leading-tight">{project.title}</h3>
+          <p className="text-slate-400 text-sm mb-4 leading-relaxed">{project.description}</p>
+
+          {/* Tech */}
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            {project.tech.slice(0, 4).map((t) => (
+              <span key={t} className="text-xs px-2 py-0.5 rounded font-mono text-slate-400"
+                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                {t}
+              </span>
+            ))}
+            {project.tech.length > 4 && (
+              <span className="text-xs px-2 py-0.5 rounded font-mono text-slate-500">
+                +{project.tech.length - 4}
+              </span>
+            )}
+          </div>
+
+          {/* Quick action buttons */}
+          <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-300 hover:text-white transition-colors"
+              style={{ background: `${project.color}15`, border: `1px solid ${project.color}30` }}
+            >
+              <CodeBracketIcon className="w-3.5 h-3.5" />
+              GitHub
+            </a>
+            {project.demo && (
+              <a
+                href={project.demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-300 hover:text-white transition-colors"
+                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)' }}
+              >
+                <PlayIcon className="w-3.5 h-3.5" />
+                Live Demo
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+export default function ProjectsSection() {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [filter, setFilter] = useState('All');
+
+  const filtered = filter === 'All' ? projects : projects.filter((p) => p.category === filter);
+
+  return (
+    <section id="projects" className="relative py-24 px-6 overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] rounded-full opacity-5"
+          style={{ background: 'radial-gradient(circle, #f472b6 0%, transparent 70%)' }} />
       </div>
 
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className={`mb-10 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <motion.div className="mb-10"
+          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.7 }}>
           <div className="flex items-center gap-3 mb-4">
             <div className="h-px flex-1 max-w-12 bg-gradient-to-r from-transparent to-pink-500" />
             <span className="text-pink-400 font-mono text-sm tracking-widest uppercase">Projects Universe</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-white">
-            What I've{' '}
-            <span style={{ color: '#f472b6', textShadow: '0 0 20px rgba(244,114,182,0.6)' }}>Built</span>
+            What I've <span style={{ color: '#f472b6', textShadow: '0 0 20px rgba(244,114,182,0.5)' }}>Built</span>
           </h2>
           <p className="text-slate-400 mt-4 max-w-xl text-lg">
-            From ML models to full-stack applications — click any card to explore the details.
+            From ML models to full-stack apps — hover to reveal quick links, click for full details.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Category filters */}
-        <div
-          className={`flex flex-wrap gap-2 mb-10 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-          style={{ transitionDelay: '100ms' }}
-        >
+        {/* Filters */}
+        <motion.div className="flex flex-wrap gap-2 mb-10"
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
           {categories.map((cat) => (
-            <button
+            <motion.button
               key={cat}
               onClick={() => setFilter(cat)}
-              className={`px-3 py-1.5 rounded-full text-xs font-mono transition-all duration-300 ${
-                filter === cat ? 'text-white' : 'text-slate-400 hover:text-white'
-              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+              className={`px-3 py-1.5 rounded-full text-xs font-mono transition-all duration-300 ${filter === cat ? 'text-white' : 'text-slate-400 hover:text-white'}`}
               style={{
                 background: filter === cat ? 'rgba(244,114,182,0.2)' : 'rgba(255,255,255,0.04)',
                 border: `1px solid ${filter === cat ? 'rgba(244,114,182,0.5)' : 'rgba(255,255,255,0.08)'}`,
               }}
             >
               {cat}
-            </button>
+            </motion.button>
           ))}
-        </div>
+        </motion.div>
 
-        {/* Projects grid */}
+        {/* Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map((project, i) => (
-            <div
-              key={project.title}
-              className={`group relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${
-                visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              } ${project.featured && i < 2 ? 'lg:col-span-1' : ''}`}
-              style={{
-                background: 'rgba(255,255,255,0.02)',
-                border: `1px solid ${project.color}20`,
-                transitionDelay: `${i * 80}ms`,
-                boxShadow: `0 0 0 rgba(0,0,0,0)`,
-              }}
-              onClick={() => setSelectedProject(project)}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLDivElement).style.boxShadow = `0 20px 60px ${project.color}20, 0 0 0 1px ${project.color}30`;
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLDivElement).style.boxShadow = '0 0 0 rgba(0,0,0,0)';
-              }}
-            >
-              {/* Hover glow */}
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                style={{ background: `radial-gradient(circle at 50% 0%, ${project.color}12 0%, transparent 60%)` }}
-              />
-
-              {/* Top accent line */}
-              <div
-                className="absolute top-0 left-0 right-0 h-0.5"
-                style={{ background: `linear-gradient(90deg, transparent, ${project.color}80, transparent)` }}
-              />
-
-              <div className="relative z-10 p-6">
-                {/* Category badge + stats */}
-                <div className="flex items-center justify-between mb-4">
-                  <span
-                    className="text-xs font-mono px-2 py-1 rounded-full"
-                    style={{
-                      background: `${project.color}15`,
-                      color: project.color,
-                      border: `1px solid ${project.color}30`,
-                    }}
-                  >
-                    {project.category}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    {project.stats && (
-                      <span className="text-xs font-mono text-slate-500 flex items-center gap-1">
-                        <StarIcon className="w-3 h-3" style={{ color: project.color }} />
-                        {project.stats}
-                      </span>
-                    )}
-                    <ArrowTopRightOnSquareIcon className="w-4 h-4 text-slate-600 group-hover:text-slate-300 transition-colors" />
-                  </div>
-                </div>
-
-                <h3 className="text-lg font-bold text-white mb-2 group-hover:text-white transition-colors leading-tight">
-                  {project.title}
-                </h3>
-                <p className="text-slate-400 text-sm mb-4 leading-relaxed">{project.description}</p>
-
-                {/* Tech stack */}
-                <div className="flex flex-wrap gap-1.5">
-                  {project.tech.slice(0, 4).map((t) => (
-                    <span
-                      key={t}
-                      className="text-xs px-2 py-0.5 rounded font-mono text-slate-400"
-                      style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
-                    >
-                      {t}
-                    </span>
-                  ))}
-                  {project.tech.length > 4 && (
-                    <span className="text-xs px-2 py-0.5 rounded font-mono text-slate-500">
-                      +{project.tech.length - 4}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
+          {filtered.map((project, i) => (
+            <ProjectCard key={project.title} project={project} index={i} onClick={() => setSelectedProject(project)} />
           ))}
         </div>
 
         {/* Stats bar */}
-        <div
-          className={`mt-12 grid grid-cols-3 gap-4 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-          style={{ transitionDelay: '600ms' }}
-        >
+        <motion.div className="mt-12 grid grid-cols-3 gap-4"
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }}>
           {[
             { label: 'Projects Built', value: '6+', color: '#6366f1' },
             { label: 'ML Models', value: '5+', color: '#06b6d4' },
             { label: 'GitHub Repos', value: '10+', color: '#f472b6' },
-          ].map((stat) => (
-            <div
-              key={stat.label}
-              className="rounded-2xl p-4 text-center"
-              style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${stat.color}20` }}
-            >
-              <div className="text-2xl font-bold font-mono" style={{ color: stat.color }}>{stat.value}</div>
-              <div className="text-xs text-slate-500 mt-1 font-mono">{stat.label}</div>
+          ].map((s) => (
+            <div key={s.label} className="rounded-2xl p-4 text-center"
+              style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${s.color}20` }}>
+              <div className="text-2xl font-bold font-mono" style={{ color: s.color }}>{s.value}</div>
+              <div className="text-xs text-slate-500 mt-1 font-mono">{s.label}</div>
             </div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
       {/* Modal */}
-      {selectedProject && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedProject(null)}
-        >
-          <div
-            className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm"
-            style={{ animation: 'fadeIn 0.2s ease' }}
-          />
-          <div
-            className="relative z-10 max-w-lg w-full rounded-2xl overflow-hidden"
-            style={{
-              background: 'rgba(15,23,42,0.98)',
-              border: `1px solid ${selectedProject.color}30`,
-              boxShadow: `0 0 80px ${selectedProject.color}20, 0 40px 80px rgba(0,0,0,0.6)`,
-              animation: 'slideUp 0.3s cubic-bezier(0.16,1,0.3,1)',
-              backdropFilter: 'blur(20px)',
-            }}
-            onClick={(e) => e.stopPropagation()}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedProject(null)}
           >
-            {/* Top accent */}
-            <div
-              className="h-1"
-              style={{ background: `linear-gradient(90deg, ${selectedProject.color}, transparent)` }}
-            />
+            <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" />
+            <motion.div
+              className="relative z-10 max-w-lg w-full rounded-2xl overflow-hidden"
+              style={{
+                background: 'rgba(15,23,42,0.98)',
+                border: `1px solid ${selectedProject.color}30`,
+                boxShadow: `0 0 80px ${selectedProject.color}20, 0 40px 80px rgba(0,0,0,0.6)`,
+                backdropFilter: 'blur(20px)',
+              }}
+              initial={{ scale: 0.85, y: 40 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.85, y: 40 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="h-1" style={{ background: `linear-gradient(90deg, ${selectedProject.color}, transparent)` }} />
+              <div className="p-8">
+                <div className="flex items-start justify-between mb-6">
+                  <div>
+                    <span className="text-xs font-mono px-2 py-1 rounded-full mb-3 inline-block"
+                      style={{ background: `${selectedProject.color}15`, color: selectedProject.color, border: `1px solid ${selectedProject.color}30` }}>
+                      {selectedProject.category}
+                    </span>
+                    <h3 className="text-2xl font-bold text-white">{selectedProject.title}</h3>
+                    {selectedProject.stats && (
+                      <div className="flex items-center gap-1.5 mt-2">
+                        <StarIcon className="w-3.5 h-3.5" style={{ color: selectedProject.color }} />
+                        <span className="text-xs font-mono" style={{ color: selectedProject.color }}>{selectedProject.stats}</span>
+                      </div>
+                    )}
+                  </div>
+                  <button onClick={() => setSelectedProject(null)} className="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                    <XMarkIcon className="w-5 h-5 text-slate-400" />
+                  </button>
+                </div>
 
-            <div className="p-8">
-              <div className="flex items-start justify-between mb-6">
-                <div>
-                  <span
-                    className="text-xs font-mono px-2 py-1 rounded-full mb-3 inline-block"
-                    style={{
-                      background: `${selectedProject.color}15`,
-                      color: selectedProject.color,
-                      border: `1px solid ${selectedProject.color}30`,
-                    }}
+                <p className="text-slate-300 leading-relaxed mb-6">{selectedProject.longDescription}</p>
+
+                <div className="mb-6">
+                  <p className="text-xs font-mono text-slate-500 uppercase tracking-widest mb-3">Tech Stack</p>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedProject.tech.map((t) => (
+                      <span key={t} className="text-sm px-3 py-1 rounded-lg font-mono"
+                        style={{ background: `${selectedProject.color}15`, color: selectedProject.color, border: `1px solid ${selectedProject.color}30` }}>
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <motion.a
+                    href={selectedProject.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-white transition-all"
+                    style={{ background: `linear-gradient(135deg, ${selectedProject.color}30, ${selectedProject.color}15)`, border: `1px solid ${selectedProject.color}40` }}
                   >
-                    {selectedProject.category}
-                  </span>
-                  <h3 className="text-2xl font-bold text-white">{selectedProject.title}</h3>
-                  {selectedProject.stats && (
-                    <div className="flex items-center gap-1.5 mt-2">
-                      <StarIcon className="w-3.5 h-3.5" style={{ color: selectedProject.color }} />
-                      <span className="text-xs font-mono" style={{ color: selectedProject.color }}>{selectedProject.stats}</span>
-                    </div>
+                    <CodeBracketIcon className="w-4 h-4" />
+                    View on GitHub
+                  </motion.a>
+                  {selectedProject.demo && (
+                    <motion.a
+                      href={selectedProject.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.04 }}
+                      className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-white transition-all"
+                      style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)' }}
+                    >
+                      <PlayIcon className="w-4 h-4" />
+                      Live Demo
+                    </motion.a>
                   )}
                 </div>
-                <button
-                  onClick={() => setSelectedProject(null)}
-                  className="p-2 rounded-lg hover:bg-white/10 transition-colors"
-                >
-                  <XMarkIcon className="w-5 h-5 text-slate-400" />
-                </button>
               </div>
-
-              <p className="text-slate-300 leading-relaxed mb-6">{selectedProject.longDescription}</p>
-
-              <div className="mb-6">
-                <p className="text-xs font-mono text-slate-500 uppercase tracking-widest mb-3">Tech Stack</p>
-                <div className="flex flex-wrap gap-2">
-                  {selectedProject.tech.map((t) => (
-                    <span
-                      key={t}
-                      className="text-sm px-3 py-1 rounded-lg font-mono"
-                      style={{
-                        background: `${selectedProject.color}15`,
-                        color: selectedProject.color,
-                        border: `1px solid ${selectedProject.color}30`,
-                      }}
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                <a
-                  href={selectedProject.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-white transition-all duration-300 hover:scale-105"
-                  style={{
-                    background: `linear-gradient(135deg, ${selectedProject.color}30, ${selectedProject.color}15)`,
-                    border: `1px solid ${selectedProject.color}40`,
-                  }}
-                >
-                  <CodeBracketIcon className="w-4 h-4" />
-                  View on GitHub
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
