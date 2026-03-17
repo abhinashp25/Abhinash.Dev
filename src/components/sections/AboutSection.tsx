@@ -6,7 +6,7 @@ import { CodeBracketIcon, CpuChipIcon, ChartBarIcon, AcademicCapIcon, SparklesIc
 
 const journey = [
   {
-    year: '2021',
+    year: '2023',
     title: 'Started Learning Python',
     subtitle: 'The Beginning',
     description: 'Dove into Python programming, mastering fundamentals, data structures, and automation. Built small projects to solidify understanding.',
@@ -16,7 +16,7 @@ const journey = [
     size: 'col-span-2 row-span-1',
   },
   {
-    year: '2022',
+    year: '2024',
     title: 'Machine Learning Projects',
     subtitle: 'AI Exploration',
     description: 'Built 5+ ML models solving real‑world problems. Explored scikit‑learn, pandas, and deep learning frameworks.',
@@ -26,7 +26,7 @@ const journey = [
     size: 'col-span-1 row-span-2',
   },
   {
-    year: '2023',
+    year: '2024',
     title: 'Full Stack Web Development',
     subtitle: 'Building Products',
     description: 'Mastered React, Node.js, and Express. Built complete web applications with real‑time features.',
@@ -36,7 +36,7 @@ const journey = [
     size: 'col-span-1 row-span-1',
   },
   {
-    year: '2024',
+    year: '2025',
     title: 'AI & Data Analytics',
     subtitle: 'Intelligent Systems',
     description: 'Combined web development with AI/ML to build intelligent applications. AI internship at OCAC Bhubaneswar — OCR, prediction models, data analytics dashboards.',

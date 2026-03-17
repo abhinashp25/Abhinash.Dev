@@ -6,56 +6,60 @@ import { BriefcaseIcon, AcademicCapIcon, CodeBracketIcon, CpuChipIcon } from '@h
 
 const timelineItems = [
   {
-    year: '2022',
+    year: 'Jul 2024',
     side: 'left' as const,
     type: 'Internship',
     title: 'Python Internship',
-    company: 'Moniba Technology & Innovation',
-    location: 'Remote',
-    description: 'Completed an intensive Python development internship covering advanced programming, automation scripts, data processing pipelines, and web development with Flask. Built multiple real-world automation tools and REST APIs.',
-    skills: ['Python', 'Flask', 'Automation', 'REST APIs', 'Data Processing', 'OOP'],
+    company: 'Moniba Technology & Innovations',
+    location: 'Kolkata, West Bengal',
+    description: 'Completed an intensive internship on Programming with Python at Moniba Technology & Innovations. Covered Python fundamentals, data structures, object-oriented programming, automation scripting, and real-world application development. Certificate issued 5th September 2024.',
+    skills: ['Python', 'OOP', 'Automation', 'Data Structures', 'Scripting'],
     icon: CodeBracketIcon,
     color: '#6366f1',
     accentColor: '#4f46e5',
+    certId: '20240905MON0030',
   },
   {
-    year: '2022–2023',
+    year: '2024–2026',
     side: 'right' as const,
-    type: 'Projects',
-    title: 'Machine Learning Portfolio',
+    type: 'Research & Projects',
+    title: 'Machine Learning & AI Development',
     company: 'Self-Directed / Academic',
     location: 'India',
-    description: 'Built and deployed 5+ ML models solving real business problems — payment prediction, currency detection, plant disease identification, and course recommendation. Mastered scikit-learn, TensorFlow, and feature engineering.',
-    skills: ['Python', 'scikit-learn', 'TensorFlow', 'Pandas', 'NumPy', 'Feature Engineering'],
+    description: 'Ongoing deep focus on machine learning and AI research. Built and deployed multiple ML models solving real business problems — invoice payment prediction (87% accuracy), plant disease detection via CNN, global currency recognition with OCR, and AI-powered course recommendation engine. Continuously exploring generative AI and deep learning.',
+    skills: ['Python', 'scikit-learn', 'TensorFlow', 'Keras', 'Pandas', 'NumPy', 'Feature Engineering', 'CNN', 'OCR'],
     icon: CpuChipIcon,
     color: '#06b6d4',
     accentColor: '#0891b2',
+    certId: null,
   },
   {
-    year: '2023–2024',
+    year: '2024–2025',
     side: 'left' as const,
     type: 'Development',
     title: 'Full Stack Development',
     company: 'Freelance & Personal Projects',
     location: 'India',
-    description: 'Developed production-ready full-stack applications using React, Node.js, and Express. Built a real-time chat application (Chatify) with Socket.io, JWT authentication, and MongoDB.',
-    skills: ['React', 'Node.js', 'Express', 'MongoDB', 'Socket.io', 'JWT'],
+    description: 'Developed production-ready full-stack web applications. Built Chatify — a real-time chat app using React + Socket.io + MongoDB. Built Vigil — an AI-powered security monitoring platform with threat detection and live dashboards. Applied REST API design, JWT authentication, and modern deployment practices.',
+    skills: ['React', 'Node.js', 'Express', 'MongoDB', 'Socket.io', 'JWT', 'TypeScript', 'REST APIs'],
     icon: BriefcaseIcon,
     color: '#f472b6',
     accentColor: '#db2777',
+    certId: null,
   },
   {
     year: '2024',
     side: 'right' as const,
     type: 'Internship',
-    title: 'AI Internship',
-    company: 'OCAC Bhubaneswar',
+    title: 'AI / ML Internship',
+    company: 'OCAC — Odisha Computer Application Centre',
     location: 'Bhubaneswar, Odisha',
-    description: 'Worked at Odisha Computer Application Centre (OCAC) on cutting-edge AI/ML projects. Developed OCR systems, prediction models, and data analytics dashboards. Applied computer vision and generative AI to real government and enterprise use cases.',
-    skills: ['Python', 'AI/ML', 'OCR', 'Computer Vision', 'Streamlit', 'SQL', 'Deep Learning'],
+    description: 'Worked at OCAC Bhubaneswar on AI/ML projects for government and enterprise use cases. Developed OCR-based document processing systems, prediction models for data analytics, and intelligent dashboards. Applied computer vision and data science to real-world government digital initiatives.',
+    skills: ['Python', 'AI/ML', 'OCR', 'Computer Vision', 'Streamlit', 'SQL', 'Deep Learning', 'Data Analytics'],
     icon: AcademicCapIcon,
     color: '#818cf8',
     accentColor: '#7c3aed',
+    certId: null,
   },
 ];
 
@@ -73,7 +77,6 @@ export default function ExperienceSection() {
 
       if (!lineRef.current || !sectionRef.current) return;
 
-      // Draw the center line as you scroll
       gsap.fromTo(
         lineRef.current,
         { scaleY: 0 },
@@ -90,41 +93,27 @@ export default function ExperienceSection() {
         }
       );
 
-      // Animate each timeline card
       const cards = sectionRef.current.querySelectorAll('.tl-card');
-      cards.forEach((card, i) => {
+      cards.forEach((card) => {
         const isLeft = card.classList.contains('tl-left');
         gsap.fromTo(
           card,
           { opacity: 0, x: isLeft ? -60 : 60 },
           {
-            opacity: 1,
-            x: 0,
-            duration: 0.8,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 82%',
-            },
+            opacity: 1, x: 0, duration: 0.8, ease: 'power3.out',
+            scrollTrigger: { trigger: card, start: 'top 82%' },
           }
         );
       });
 
-      // Animate dots
       const dots = sectionRef.current.querySelectorAll('.tl-dot');
       dots.forEach((dot) => {
         gsap.fromTo(
           dot,
           { scale: 0, opacity: 0 },
           {
-            scale: 1,
-            opacity: 1,
-            duration: 0.5,
-            ease: 'back.out(2)',
-            scrollTrigger: {
-              trigger: dot,
-              start: 'top 82%',
-            },
+            scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(2)',
+            scrollTrigger: { trigger: dot, start: 'top 82%' },
           }
         );
       });
@@ -138,7 +127,6 @@ export default function ExperienceSection() {
 
   return (
     <section id="experience" ref={sectionRef} className="relative py-24 px-6">
-      {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-5"
           style={{ background: 'radial-gradient(circle, #818cf8 0%, transparent 70%)' }} />
@@ -159,14 +147,15 @@ export default function ExperienceSection() {
             <span style={{ color: '#f472b6', textShadow: '0 0 20px rgba(244,114,182,0.5)' }}>Timeline</span>
           </h2>
           <p className="text-slate-400 mt-4 max-w-xl mx-auto text-lg">
-            A vertical timeline of my professional journey — internships, projects, and growth.
+            A vertical journey through internships, projects, and professional milestones.
           </p>
         </motion.div>
 
         {/* Timeline */}
         <div className="relative">
-          {/* Center line */}
+          {/* Background line */}
           <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/5 -translate-x-1/2 hidden md:block" />
+          {/* Animated line */}
           <div
             ref={lineRef}
             className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 hidden md:block"
@@ -207,10 +196,9 @@ export default function ExperienceSection() {
                     >
                       {/* Top accent */}
                       <div
-                        className={`absolute top-0 h-0.5 left-0 right-0 opacity-60`}
+                        className="absolute top-0 h-0.5 left-0 right-0 opacity-60"
                         style={{ background: `linear-gradient(${isLeft ? '270deg' : '90deg'}, transparent, ${item.color})` }}
                       />
-
                       {/* Hover glow */}
                       <div
                         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
@@ -226,7 +214,7 @@ export default function ExperienceSection() {
                         </div>
 
                         <div className={`flex-1 ${isLeft ? 'md:text-right' : ''}`}>
-                          <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <div className={`flex items-center gap-2 mb-1 flex-wrap ${isLeft ? 'md:justify-end' : ''}`}>
                             <span
                               className="text-xs font-mono px-2 py-0.5 rounded-full"
                               style={{ background: `${item.color}15`, color: item.color, border: `1px solid ${item.color}30` }}
@@ -240,6 +228,12 @@ export default function ExperienceSection() {
                           <p className="text-sm font-medium mb-0.5" style={{ color: item.color }}>{item.company}</p>
                           <p className="text-xs font-mono text-slate-500 mb-3">{item.location}</p>
                           <p className="text-slate-400 text-sm leading-relaxed mb-4">{item.description}</p>
+
+                          {item.certId && (
+                            <p className="text-xs font-mono text-slate-600 mb-3">
+                              Cert ID: {item.certId}
+                            </p>
+                          )}
 
                           <div className={`flex flex-wrap gap-1.5 ${isLeft ? 'md:justify-end' : ''}`}>
                             {item.skills.map((skill) => (
@@ -269,7 +263,7 @@ export default function ExperienceSection() {
                     />
                   </div>
 
-                  {/* Spacer for opposite side */}
+                  {/* Spacer */}
                   <div className="flex-1 hidden md:block" />
                 </div>
               );

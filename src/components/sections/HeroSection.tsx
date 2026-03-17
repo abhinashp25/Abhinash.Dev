@@ -2,9 +2,12 @@
 
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDownIcon, ArrowTopRightOnSquareIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+import { ArrowDownIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { useTypewriter } from '@/hooks/useTypewriter';
 import { useMousePosition } from '@/hooks/useMousePosition';
+import dynamic from 'next/dynamic';
+
+const ProfilePhoto = dynamic(() => import('@/components/ui/ProfilePhoto'), { ssr: false });
 
 const texts = [
   'Full Stack Developer',
@@ -28,13 +31,6 @@ const item = {
     transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
   },
 };
-
-const orbitals = [
-  { label: 'Python', color: '#6366f1', delay: '0s', dur: 14, radius: 120 },
-  { label: 'React',  color: '#06b6d4', delay: '-4s', dur: 18, radius: 120 },
-  { label: 'ML/AI',  color: '#f472b6', delay: '-9s', dur: 12, radius: 120 },
-  { label: 'Node',   color: '#818cf8', delay: '-13s', dur: 20, radius: 120 },
-];
 
 export default function HeroSection() {
   const { displayText, isTyping } = useTypewriter({ texts, typeSpeed: 70, deleteSpeed: 35, pauseDuration: 2200 });
@@ -107,7 +103,7 @@ export default function HeroSection() {
 
       {/* Main grid */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 pt-20 w-full">
-        <div className="grid lg:grid-cols-[1.15fr_1fr] gap-14 items-center">
+        <div className="grid lg:grid-cols-[1.1fr_1fr] gap-14 items-center">
 
           {/* ─── Left: Text ─── */}
           <motion.div
@@ -209,85 +205,32 @@ export default function HeroSection() {
                 <ArrowDownTrayIcon className="w-4 h-4 text-cyber-400" />
                 Download Resume
               </motion.a>
+            </motion.div>
 
-              {/* GitHub */}
-              <motion.a
+            {/* Quick info row */}
+            <motion.div variants={item} className="flex flex-wrap items-center gap-4">
+              <a
                 href="https://github.com/abhinashp25"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
-                className="group flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold glass neon-border text-slate-300 hover:text-white transition-colors duration-300"
+                target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-xs font-mono text-slate-500 hover:text-brand-400 transition-colors"
               >
-                <ArrowTopRightOnSquareIcon className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                GitHub
-              </motion.a>
+                <span style={{ color: '#6366f1' }}>▸</span> github.com/abhinashp25
+              </a>
+              <span className="text-slate-700">·</span>
+              <span className="flex items-center gap-1.5 text-xs font-mono text-slate-500">
+                <span style={{ color: '#06b6d4' }}>▸</span> Bhubaneswar, Odisha
+              </span>
             </motion.div>
           </motion.div>
 
-          {/* ─── Right: Orbital visual ─── */}
+          {/* ─── Right: Profile Photo ─── */}
           <motion.div
             className="hidden lg:flex items-center justify-center"
-            initial={{ opacity: 0, scale: 0.75 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, scale: 0.7, filter: 'blur(20px)' }}
+            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+            transition={{ duration: 1.4, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div
-              className="relative w-[340px] h-[340px]"
-              style={{ transform: `translate(${px * 0.08}px, ${py * 0.08}px)`, transition: 'transform 0.18s ease-out' }}
-            >
-              {/* Center orb */}
-              <motion.div
-                className="absolute inset-0 flex items-center justify-center"
-                animate={{ scale: [1, 1.04, 1] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                <div className="w-44 h-44 rounded-full glass-strong neon-border flex items-center justify-center"
-                  style={{ boxShadow: '0 0 50px rgba(99,102,241,0.35), 0 0 100px rgba(99,102,241,0.12)' }}
-                >
-                  <div className="text-center">
-                    <div
-                      className="text-5xl font-bold font-jakarta"
-                      style={{
-                        background: 'linear-gradient(135deg, #6366f1, #06b6d4)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                      }}
-                    >
-                      AP
-                    </div>
-                    <div className="text-[10px] font-mono text-cyber-400 mt-1 tracking-[0.3em]">DEVELOPER</div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Orbiting tech badges */}
-              {orbitals.map((orb, i) => (
-                <div
-                  key={orb.label}
-                  className="absolute inset-0 flex items-center justify-center"
-                  style={{ animation: `orbit ${orb.dur}s linear infinite`, animationDelay: orb.delay }}
-                >
-                  <motion.div
-                    whileHover={{ scale: 1.3 }}
-                    className="w-12 h-12 rounded-xl glass flex items-center justify-center text-[10px] font-mono font-bold cursor-default"
-                    style={{
-                      border: `1px solid ${orb.color}50`,
-                      color: orb.color,
-                      boxShadow: `0 0 14px ${orb.color}40`,
-                    }}
-                  >
-                    {orb.label}
-                  </motion.div>
-                </div>
-              ))}
-
-              {/* Rings */}
-              <div className="absolute inset-0 rounded-full border border-brand-500/15 animate-spin-slow" />
-              <div className="absolute inset-4 rounded-full border border-cyber-500/10"
-                style={{ animation: 'spin 16s linear infinite reverse' }} />
-              <div className="absolute inset-8 rounded-full border border-neon-500/08 animate-spin-slow" />
-            </div>
+            <ProfilePhoto />
           </motion.div>
         </div>
 

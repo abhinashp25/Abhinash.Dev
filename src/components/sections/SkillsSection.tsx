@@ -24,14 +24,21 @@ const skillsData = [
   { name: 'GitHub', description: 'Code hosting & collaboration', color: '#e2e8f0', size: 50 },
   { name: 'Streamlit', description: 'Rapid ML app deployment', color: '#ff4b4b', size: 48 },
   { name: 'OCR', description: 'Optical character recognition systems', color: '#fbbf24', size: 46 },
+  { name: 'TypeScript', description: 'Typed JavaScript for scalable apps', color: '#3b82f6', size: 54 },
+  { name: 'Java', description: 'Object-oriented programming language', color: '#f89820', size: 52 },
+  { name: 'Express.js', description: 'Fast Node.js web framework', color: '#64748b', size: 52 },
+  { name: 'FastAPI', description: 'High-performance Python API framework', color: '#10b981', size: 50 },
+  { name: 'REST APIs', description: 'RESTful API design & integration', color: '#a78bfa', size: 50 },
+  { name: 'PostgreSQL', description: 'Advanced relational database', color: '#6366f1', size: 48 },
+  { name: 'Keras', description: 'High-level deep learning API', color: '#f43f5e', size: 46 },
 ];
 
 const skillCategories = [
-  { label: 'Languages', skills: ['Python', 'JavaScript', 'HTML', 'CSS'], color: '#6366f1' },
+  { label: 'Languages', skills: ['Python', 'JavaScript', 'TypeScript', 'Java', 'HTML', 'CSS'], color: '#6366f1' },
   { label: 'Frontend', skills: ['React', 'Next.js', 'TailwindCSS'], color: '#f472b6' },
-  { label: 'Backend', skills: ['Node.js', 'Flask', 'Express.js'], color: '#06b6d4' },
-  { label: 'ML / AI', skills: ['Machine Learning', 'Deep Learning', 'Pandas', 'NumPy', 'Matplotlib', 'Streamlit', 'OCR'], color: '#22d3ee' },
-  { label: 'Databases', skills: ['MongoDB', 'SQL'], color: '#4ade80' },
+  { label: 'Backend', skills: ['Node.js', 'Flask', 'Express.js', 'FastAPI', 'REST APIs'], color: '#06b6d4' },
+  { label: 'ML / AI', skills: ['Machine Learning', 'Deep Learning', 'Keras', 'Pandas', 'NumPy', 'Matplotlib', 'Streamlit', 'OCR'], color: '#22d3ee' },
+  { label: 'Databases', skills: ['MongoDB', 'SQL', 'PostgreSQL'], color: '#4ade80' },
   { label: 'Tools', skills: ['Git', 'GitHub'], color: '#fb7185' },
 ];
 

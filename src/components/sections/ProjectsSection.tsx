@@ -51,14 +51,15 @@ const projects: Project[] = [
     stats: 'Real-time',
   },
   {
-    title: 'Global Currency Detection AI',
-    description: 'AI system detecting world currencies from images using deep learning.',
-    longDescription: 'Developed a computer vision system that identifies and classifies currency notes from 50+ countries. Uses a custom CNN architecture with transfer learning from ResNet. Integrated OCR for serial number extraction and denomination recognition. Achieves high accuracy across diverse lighting conditions.',
-    tech: ['Python', 'TensorFlow', 'OpenCV', 'OCR', 'ResNet', 'Deep Learning'],
+    title: 'Vigil — Safety & Alert System',
+    description: 'Full-stack safety monitoring and real-time alert platform built with React and Node.js.',
+    longDescription: 'Vigil is a full-stack web application for real-time safety monitoring and intelligent alerting. Built collaboratively with AI assistance, it features a React frontend with live dashboards, a Node.js/Express backend, and REST API integration. The platform monitors safety-critical events, processes incoming signals, and dispatches real-time alerts to users. Designed with a clean, responsive UI and robust backend architecture for reliable incident tracking and notification management.',
+    tech: ['React', 'Node.js', 'Express', 'MongoDB', 'REST APIs', 'TypeScript'],
     color: '#06b6d4',
-    github: 'https://github.com/abhinashp25',
-    category: 'Computer Vision',
-    stats: '50+ Currencies',
+    github: 'https://github.com/abhinashp25/vigil',
+    category: 'Full Stack',
+    featured: true,
+    stats: 'Real-time Alerts',
   },
   {
     title: 'AI Course Recommender',
@@ -70,19 +71,10 @@ const projects: Project[] = [
     category: 'Recommendation System',
     stats: 'Personalized AI',
   },
-  {
-    title: 'Factory Telemetry Analysis',
-    description: 'Industrial IoT data analytics dashboard for factory monitoring.',
-    longDescription: 'Comprehensive analytics platform for factory floor telemetry data. Processes sensor readings from 200+ IoT devices, detects anomalies using statistical methods, and provides predictive maintenance alerts. Features real-time dashboards with Plotly visualizations. Reduced equipment downtime by 30% in testing.',
-    tech: ['Python', 'SQL', 'Pandas', 'Plotly', 'IoT', 'Data Analytics'],
-    color: '#22d3ee',
-    github: 'https://github.com/abhinashp25',
-    category: 'Data Analytics',
-    stats: '30% Less Downtime',
-  },
+
 ];
 
-const categories = ['All', 'Machine Learning', 'Computer Vision', 'Full Stack', 'Data Analytics', 'Recommendation System'];
+const categories = ['All', 'Machine Learning', 'Computer Vision', 'Full Stack', 'Recommendation System'];
 
 // 3D tilt handlers
 function useTilt() {
@@ -286,7 +278,7 @@ export default function ProjectsSection() {
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }}>
           {[
-            { label: 'Projects Built', value: '6+', color: '#6366f1' },
+            { label: 'Projects Built', value: '5+', color: '#6366f1' },
             { label: 'ML Models', value: '5+', color: '#06b6d4' },
             { label: 'GitHub Repos', value: '10+', color: '#f472b6' },
           ].map((s) => (
