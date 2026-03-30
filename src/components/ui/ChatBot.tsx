@@ -157,51 +157,53 @@ export default function ChatBot() {
       {/* Floating button */}
       <button
         onClick={() => (isOpen ? setIsOpen(false) : handleOpen())}
-        className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300 hover:scale-110"
+        className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full flex items-center justify-center transition-transform duration-300 hover:scale-105"
         style={{
-          background: 'linear-gradient(135deg, #6366f1, #4f46e5)',
-          boxShadow: '0 0 25px rgba(99, 102, 241, 0.5)',
+          background: 'rgba(20, 20, 20, 0.8)',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255,255,255,0.05)',
+          backdropFilter: 'blur(20px)',
         }}
         aria-label="Toggle AI Assistant"
       >
         {isOpen ? (
           <XMarkIcon className="w-6 h-6 text-white" />
         ) : (
-          <ChatBubbleLeftRightIcon className="w-6 h-6 text-white" />
+          <SparklesIcon className="w-6 h-6 text-white" />
         )}
         {!isOpen && (
-          <span className="absolute -top-1 -right-1 w-3 h-3 bg-cyan-400 rounded-full animate-pulse" />
+          <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 rounded-full animate-pulse border-2 border-dark-900" />
         )}
       </button>
 
       {/* Chat window */}
       <div
-        className={`fixed bottom-24 right-6 z-40 w-80 md:w-96 rounded-2xl overflow-hidden transition-all duration-300 ${
-          isOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4 pointer-events-none'
+        className={`fixed bottom-24 right-6 z-40 w-[350px] md:w-[400px] rounded-[24px] overflow-hidden transition-all duration-400 ease-out origin-bottom-right ${
+          isOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-8 pointer-events-none'
         }`}
         style={{
-          background: 'rgba(15, 23, 42, 0.95)',
-          border: '1px solid rgba(99, 102, 241, 0.3)',
-          boxShadow: '0 0 50px rgba(99, 102, 241, 0.2), 0 25px 50px rgba(0,0,0,0.5)',
-          backdropFilter: 'blur(20px)',
+          background: 'rgba(10, 10, 10, 0.85)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05) inset',
+          backdropFilter: 'blur(30px) saturate(150%)',
         }}
       >
         {/* Header */}
         <div
-          className="px-4 py-3 flex items-center gap-3"
-          style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.2), rgba(6,182,212,0.1))', borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+          className="px-5 py-4 flex items-center gap-3 backdrop-blur-md"
+          style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
         >
           <div
-            className="w-9 h-9 rounded-xl flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #6366f1, #4f46e5)' }}
+            className="w-10 h-10 rounded-[14px] flex items-center justify-center border border-white/10"
+            style={{ background: 'rgba(255,255,255,0.05)' }}
           >
-            <SparklesIcon className="w-4 h-4 text-white" />
+            <SparklesIcon className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1">
-            <p className="text-white text-sm font-semibold">AI Assistant</p>
-            <div className="flex items-center gap-1.5">
-              <div className={`w-1.5 h-1.5 rounded-full ${isLoading ? 'bg-yellow-400 animate-pulse' : 'bg-green-400'}`} />
-              <p className="text-slate-400 text-xs font-mono">{isLoading ? 'Thinking...' : 'DeepSeek V3.2 · Online'}</p>
+            <p className="text-white text-[15px] font-medium tracking-wide">AI Assistant</p>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <div className={`w-1.5 h-1.5 rounded-full ${isLoading ? 'bg-white/50 animate-pulse' : 'bg-emerald-400'}`} />
+              <p className="text-white/40 text-[11px] font-mono tracking-widest uppercase">{isLoading ? 'Processing' : 'Connected'}</p>
             </div>
           </div>
           <button
@@ -213,34 +215,34 @@ export default function ChatBot() {
         </div>
 
         {/* Messages */}
-        <div className="h-72 overflow-y-auto p-4 space-y-3">
+        <div className="h-[340px] overflow-y-auto p-5 space-y-4 smooth-scroll">
           {messages.map((msg, i) => (
             <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}>
               {msg.role === 'assistant' && (
                 <div
-                  className="w-6 h-6 rounded-lg flex items-center justify-center mr-2 mt-0.5 flex-shrink-0"
-                  style={{ background: 'linear-gradient(135deg, #6366f1, #4f46e5)' }}
+                  className="w-7 h-7 rounded-[10px] flex items-center justify-center mr-3 mt-1 flex-shrink-0 border border-white/10"
+                  style={{ background: 'rgba(255,255,255,0.03)' }}
                 >
-                  <SparklesIcon className="w-3 h-3 text-white" />
+                  <SparklesIcon className="w-3.5 h-3.5 text-white/80" />
                 </div>
               )}
               <div
-                className={`max-w-[78%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
-                  msg.role === 'user' ? 'text-white rounded-br-sm' : 'text-slate-200 rounded-bl-sm'
+                className={`max-w-[82%] rounded-[18px] px-4 py-3 text-[14px] leading-relaxed font-sans ${
+                  msg.role === 'user' ? 'text-dark-900 rounded-br-[4px]' : 'text-slate-300 rounded-bl-[4px]'
                 }`}
                 style={{
                   background:
-                    msg.role === 'user' ?'linear-gradient(135deg, #6366f1, #4f46e5)' :'rgba(255,255,255,0.06)',
-                  border: msg.role === 'assistant' ? '1px solid rgba(255,255,255,0.08)' : 'none',
+                    msg.role === 'user' ? '#ffffff' : 'rgba(255,255,255,0.04)',
+                  border: msg.role === 'assistant' ? '1px solid rgba(255,255,255,0.06)' : 'none',
                 }}
               >
                 {msg.content || (
-                  <div className="flex gap-1 py-1">
+                  <div className="flex gap-1.5 py-1.5 items-center">
                     {[0, 1, 2].map((j) => (
                       <div
                         key={j}
-                        className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce"
-                        style={{ animationDelay: `${j * 0.15}s` }}
+                        className="w-1.5 h-1.5 rounded-full bg-slate-400/80 animate-pulse"
+                        style={{ animationDelay: `${j * 0.2}s` }}
                       />
                     ))}
                   </div>
@@ -251,10 +253,9 @@ export default function ChatBot() {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input */}
         <div
-          className="px-3 py-3 flex items-center gap-2"
-          style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
+          className="px-4 py-4 flex items-center gap-3"
+          style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
         >
           <input
             ref={inputRef}
@@ -262,36 +263,33 @@ export default function ChatBot() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleSend()}
-            placeholder="Ask about Abhinash..."
+            placeholder="Ask anything..."
             disabled={isLoading}
-            className="flex-1 rounded-xl px-3 py-2 text-sm text-white placeholder-slate-500 outline-none transition-colors font-mono disabled:opacity-60"
+            className="flex-1 rounded-full px-4 py-2.5 text-sm text-white placeholder-white/30 outline-none transition-all font-sans disabled:opacity-60"
             style={{
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(255,255,255,0.08)',
+              background: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.1)',
             }}
           />
           <button
             onClick={handleSend}
             disabled={!input.trim() || isLoading}
-            className="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-110 disabled:opacity-40 disabled:cursor-not-allowed"
-            style={{ background: 'linear-gradient(135deg, #6366f1, #4f46e5)' }}
+            className="w-10 h-10 rounded-full flex items-center justify-center transition-transform duration-300 hover:scale-110 disabled:opacity-40 disabled:cursor-not-allowed bg-white"
           >
-            <PaperAirplaneIcon className="w-4 h-4 text-white" />
+            <PaperAirplaneIcon className="w-4 h-4 text-dark-900 ml-0.5" />
           </button>
         </div>
 
-        {/* Quick prompts */}
         <div
-          className="px-3 pb-3 flex flex-wrap gap-1.5"
-          style={{ borderTop: '1px solid rgba(255,255,255,0.03)' }}
+          className="px-4 pb-4 flex flex-wrap gap-2"
         >
-          {['About Abhinash', 'His projects', 'Tech skills', 'Contact info'].map((prompt) => (
+          {['About Abhinash', 'View Projects', 'Skills overview', 'Contact info'].map((prompt) => (
             <button
               key={prompt}
               onClick={() => { setInput(prompt); inputRef.current?.focus(); }}
               disabled={isLoading}
-              className="text-xs px-2 py-1 rounded-lg font-mono text-slate-400 hover:text-white transition-colors disabled:opacity-40"
-              style={{ background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.2)' }}
+              className="text-[11px] px-3 py-1.5 rounded-full font-mono text-white/50 hover:text-white transition-all duration-300 disabled:opacity-40"
+              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}
             >
               {prompt}
             </button>

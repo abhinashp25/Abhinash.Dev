@@ -12,8 +12,6 @@ const education = [
     location: 'Bhubaneswar, Odisha',
     period: '2023 – 2027',
     status: 'Pursuing',
-    cgpa: '7.6',
-    cgpaOutOf: '10',
     color: '#ffffff',
     icon: BuildingLibraryIcon,
     highlights: ['Computer Science Core', 'AI & Machine Learning', 'Data Structures & Algorithms', 'Web Technologies'],
@@ -27,8 +25,6 @@ const education = [
     location: 'Banpur, Odisha',
     period: '2021 – 2023',
     status: 'Completed',
-    cgpa: null,
-    cgpaOutOf: null,
     color: '#e2e8f0',
     icon: AcademicCapIcon,
     highlights: ['Physics', 'Chemistry', 'Mathematics'],
@@ -42,8 +38,6 @@ const education = [
     location: 'Gambharimunda, Odisha',
     period: 'Completed 2021',
     status: 'Completed',
-    cgpa: null,
-    cgpaOutOf: null,
     color: '#94a3b8',
     icon: AcademicCapIcon,
     highlights: ['Science', 'Mathematics', 'English'],
@@ -86,41 +80,7 @@ export default function EducationSection() {
           </p>
         </motion.div>
 
-        {/* CGPA highlight banner */}
-        <motion.div
-          className="mb-12 p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4"
-          style={{
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)',
-            border: '1px solid rgba(255,255,255,0.08)',
-          }}
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} transition={{ duration: 0.6 }}>
-          <div
-            className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
-            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <BuildingLibraryIcon className="w-7 h-7 text-white" />
-          </div>
-          <div className="flex-1">
-            <div className="flex flex-wrap items-center gap-3 mb-1">
-              <p className="text-white font-bold text-lg">Currently Pursuing B.Tech CSE</p>
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-mono text-green-400"
-                style={{ background: 'rgba(74,222,128,0.12)', border: '1px solid rgba(74,222,128,0.35)' }}>
-                ● Active
-              </span>
-            </div>
-            <p className="text-slate-400 text-sm">GIFT Autonomous, Bhubaneswar · Affiliated to BPUT · Expected 2026</p>
-          </div>
-          <div className="text-right flex-shrink-0">
-            <div className="flex items-baseline gap-1">
-              <span className="text-4xl font-bold" style={{
-                background: 'linear-gradient(135deg, #ffffff, #a1a1aa)',
-                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-              }}>7.6</span>
-              <span className="text-slate-500 text-sm font-mono"> / 10</span>
-            </div>
-            <p className="text-slate-500 text-xs font-mono uppercase tracking-wider">CGPA</p>
-          </div>
-        </motion.div>
+
 
         {/* Cards */}
         <div className="space-y-6">
@@ -210,25 +170,6 @@ export default function EducationSection() {
                           ))}
                         </div>
                       </div>
-
-                      {/* CGPA badge */}
-                      {edu.cgpa && (
-                        <div className="flex-shrink-0 text-center md:text-right">
-                          <div className="inline-flex flex-col items-center px-5 py-4 rounded-2xl"
-                            style={{ background: `${edu.color}10`, border: `1px solid ${edu.color}25` }}>
-                            <div className="flex items-center gap-1">
-                              <StarIcon className="w-4 h-4" style={{ color: edu.color }} />
-                              <span className="text-xs font-mono text-slate-500 uppercase tracking-wider">CGPA</span>
-                            </div>
-                            <div className="mt-1 flex items-baseline gap-0.5">
-                              <span className="text-3xl font-bold font-mono" style={{ color: edu.color }}>
-                                {edu.cgpa}
-                              </span>
-                              <span className="text-slate-600 text-xs font-mono">/{edu.cgpaOutOf}</span>
-                            </div>
-                          </div>
-                        </div>
-                      )}
                     </div>
                   </div>
                 </motion.div>

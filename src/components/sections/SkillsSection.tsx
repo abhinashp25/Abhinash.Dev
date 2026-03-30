@@ -14,7 +14,7 @@ const skillsData = [
   { name: 'Next.js', description: 'Full-stack React framework & SSR', color: '#a78bfa', size: 60 },
   { name: 'HTML', description: 'Semantic markup & accessibility', color: '#fb923c', size: 58 },
   { name: 'CSS', description: 'Responsive design & animations', color: '#38bdf8', size: 58 },
-  { name: 'SQL', description: 'Database design & complex queries', color: '#67e8f9', size: 56 },
+  { name: 'Supabase', description: 'Open source Firebase alternative', color: '#3ecf8e', size: 56 },
   { name: 'TailwindCSS', description: 'Utility-first responsive styling', color: '#c084fc', size: 55 },
   { name: 'Pandas', description: 'Data manipulation & analysis', color: '#34d399', size: 54 },
   { name: 'NumPy', description: 'Numerical computing & arrays', color: '#60a5fa', size: 52 },
@@ -29,7 +29,7 @@ const skillsData = [
   { name: 'Express.js', description: 'Fast Node.js web framework', color: '#64748b', size: 52 },
   { name: 'FastAPI', description: 'High-performance Python API framework', color: '#10b981', size: 50 },
   { name: 'REST APIs', description: 'RESTful API design & integration', color: '#a78bfa', size: 50 },
-  { name: 'PostgreSQL', description: 'Advanced relational database', color: '#6366f1', size: 48 },
+
   { name: 'Keras', description: 'High-level deep learning API', color: '#f43f5e', size: 46 },
 ];
 
@@ -38,7 +38,7 @@ const skillCategories = [
   { label: 'Frontend', skills: ['React', 'Next.js', 'TailwindCSS'], color: '#f472b6' },
   { label: 'Backend', skills: ['Node.js', 'Flask', 'Express.js', 'FastAPI', 'REST APIs'], color: '#06b6d4' },
   { label: 'ML / AI', skills: ['Machine Learning', 'Deep Learning', 'Keras', 'Pandas', 'NumPy', 'Matplotlib', 'Streamlit', 'OCR'], color: '#22d3ee' },
-  { label: 'Databases', skills: ['MongoDB', 'SQL', 'PostgreSQL'], color: '#4ade80' },
+  { label: 'Databases', skills: ['MongoDB', 'Supabase'], color: '#4ade80' },
   { label: 'Tools', skills: ['Git', 'GitHub'], color: '#fb7185' },
 ];
 

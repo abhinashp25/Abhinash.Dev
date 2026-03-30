@@ -40,10 +40,10 @@ export default function AILabSection() {
       const late90 = Math.max(0, 100 - onTime - late30 - late60);
 
       setResult([
-        { label: 'On Time', value: onTime, color: '#06b6d4' },
-        { label: '< 30 days', value: late30, color: '#6366f1' },
-        { label: '30-60 days', value: late60, color: '#f472b6' },
-        { label: '> 60 days', value: late90, color: '#ef4444' },
+        { label: 'On Time', value: onTime, color: '#ffffff' },
+        { label: '< 30 days', value: late30, color: '#e2e8f0' },
+        { label: '30-60 days', value: late60, color: '#94a3b8' },
+        { label: '> 60 days', value: late90, color: '#475569' },
       ]);
       setIsLoading(false);
     }, 1800);
@@ -55,12 +55,16 @@ export default function AILabSection() {
         {/* Header */}
         <div className={`mb-16 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="flex items-center gap-3 mb-4">
-            <div className="h-px flex-1 max-w-12 bg-gradient-to-r from-transparent to-cyber-500" />
-            <span className="text-cyber-400 font-mono text-sm tracking-widest uppercase">AI Lab</span>
+            <div className="h-px flex-1 max-w-12 bg-gradient-to-r from-transparent to-white/50" />
+            <span className="text-white/60 font-mono text-sm tracking-widest uppercase">AI Lab</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-white">
             Developer{' '}
-            <span className="text-glow-cyan" style={{ color: '#06b6d4' }}>Laboratory</span>
+            <span style={{
+              background: 'linear-gradient(135deg, #ffffff, #a1a1aa)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+              textShadow: '0 0 20px rgba(255,255,255,0.2)'
+            }}>Laboratory</span>
           </h2>
           <p className="text-slate-400 mt-4 max-w-xl text-lg">
             Live demo of Invoice Payment Prediction — enter parameters and watch the AI predict.
@@ -69,7 +73,7 @@ export default function AILabSection() {
 
         <div className={`grid lg:grid-cols-2 gap-8 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '200ms' }}>
           {/* Input Panel */}
-          <div className="rounded-2xl glass neon-border-cyan overflow-hidden">
+          <div className="rounded-2xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.1)' }}>
             {/* Terminal header */}
             <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5 bg-dark-800/50">
               <div className="w-3 h-3 rounded-full bg-red-500/80" />
@@ -88,7 +92,7 @@ export default function AILabSection() {
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <label className="text-sm font-mono text-slate-400">Monthly Income</label>
-                  <span className="text-sm font-mono text-cyber-400">₹{income.toLocaleString()}</span>
+                  <span className="text-sm font-mono text-slate-300">₹{income.toLocaleString()}</span>
                 </div>
                 <input
                   type="range"
@@ -99,7 +103,7 @@ export default function AILabSection() {
                   onChange={(e) => setIncome(Number(e.target.value))}
                   className="w-full h-1.5 rounded-full appearance-none cursor-pointer"
                   style={{
-                    background: `linear-gradient(to right, #06b6d4 0%, #06b6d4 ${((income - 10000) / 190000) * 100}%, #334155 ${((income - 10000) / 190000) * 100}%, #334155 100%)`,
+                    background: `linear-gradient(to right, #ffffff 0%, #ffffff ${((income - 10000) / 190000) * 100}%, #334155 ${((income - 10000) / 190000) * 100}%, #334155 100%)`,
                   }}
                 />
                 <div className="flex justify-between text-xs font-mono text-slate-600">
@@ -111,7 +115,7 @@ export default function AILabSection() {
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <label className="text-sm font-mono text-slate-400">Credit Score</label>
-                  <span className="text-sm font-mono text-brand-400">{creditScore}</span>
+                  <span className="text-sm font-mono text-slate-300">{creditScore}</span>
                 </div>
                 <input
                   type="range"
@@ -139,8 +143,9 @@ export default function AILabSection() {
                     type="number"
                     value={invoiceAmount}
                     onChange={(e) => setInvoiceAmount(Number(e.target.value))}
-                    className="w-full bg-dark-800 border border-dark-700 rounded-xl pl-8 pr-4 py-3 text-white font-mono text-sm focus:outline-none focus:border-brand-500 focus:shadow-glow transition-all"
+                    className="w-full bg-dark-800 border border-dark-700 rounded-xl pl-8 pr-4 py-3 text-white font-mono text-sm focus:outline-none focus:border-slate-500 transition-all"
                     placeholder="Enter invoice amount"
+                    style={{ background: 'rgba(255,255,255,0.03)' }}
                   />
                 </div>
               </div>
@@ -149,8 +154,8 @@ export default function AILabSection() {
               <button
                 onClick={runPrediction}
                 disabled={isLoading}
-                className="w-full py-3 rounded-xl font-semibold text-white transition-all duration-300 hover:shadow-glow-cyan hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                style={{ background: 'linear-gradient(135deg, #06b6d4, #0891b2)' }}
+                className="w-full py-3 rounded-xl font-semibold text-dark-900 transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                style={{ background: 'linear-gradient(135deg, #ffffff, #e2e8f0)', boxShadow: '0 0 20px rgba(255,255,255,0.15)' }}
               >
                 {isLoading ? (
                   <>
@@ -168,7 +173,7 @@ export default function AILabSection() {
           </div>
 
           {/* Output Panel */}
-          <div className="rounded-2xl glass neon-border overflow-hidden">
+          <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.1)' }}>
             <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5 bg-dark-800/50">
               <div className="w-3 h-3 rounded-full bg-red-500/80" />
               <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
@@ -184,8 +189,8 @@ export default function AILabSection() {
 
               {!result && !isLoading && (
                 <div className="flex flex-col items-center justify-center h-64 text-center">
-                  <div className="w-16 h-16 rounded-2xl glass neon-border flex items-center justify-center mb-4 animate-pulse-glow">
-                    <CpuChipIcon className="w-8 h-8 text-brand-400" />
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 opacity-50" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <CpuChipIcon className="w-8 h-8 text-slate-400" />
                   </div>
                   <p className="text-slate-500 font-mono text-sm">Enter parameters and run prediction</p>
                   <p className="text-slate-600 font-mono text-xs mt-1">Results will appear here</p>
