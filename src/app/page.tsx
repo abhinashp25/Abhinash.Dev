@@ -4,7 +4,6 @@ import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
 
 const LoadingScreen    = dynamic(() => import('@/components/ui/LoadingScreen'),                       { ssr: false });
-const CustomCursor     = dynamic(() => import('@/components/ui/CustomCursor'),                        { ssr: false });
 const ParticleBackground = dynamic(() => import('@/components/ui/ParticleBackground'),               { ssr: false });
 const Navigation       = dynamic(() => import('@/components/ui/Navigation'),                          { ssr: false });
 const HeroSection      = dynamic(() => import('@/components/sections/HeroSection'));
@@ -31,7 +30,6 @@ export default function Home() {
   return (
     <main className="relative min-h-screen bg-dark-900 overflow-x-hidden">
       <LoadingScreen />
-      <CustomCursor />
       <ParticleBackground />
       <Navigation />
 

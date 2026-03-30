@@ -4,7 +4,7 @@ import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
 import '../styles/index.css';
 import '../styles/tailwind.css';
 import { Toaster } from 'react-hot-toast';
-import CustomCursor from '@/components/ui/CustomCursor';
+import ClientConsole from '@/components/ui/ClientConsole';
 
 
 const jakarta = Plus_Jakarta_Sans({ 
@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`scroll-smooth ${jakarta.variable} ${jetbrains.variable}`}>
       <body className="bg-dark-900 text-slate-200 font-sans antialiased overflow-x-hidden">
-        <CustomCursor />
+        <ClientConsole />
         {children}
         <Toaster
           position="bottom-left"

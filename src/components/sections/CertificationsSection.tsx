@@ -20,7 +20,7 @@ const certs = [
     badge: '🏭',
     eliteBadge: true,
     verified: true,
-    credentialUrl: '#',
+    credentialUrl: '/introduction to industry 4.0 and industrial internet of things certificate.pdf',
     totalCertified: '15,725',
   },
   {
@@ -39,7 +39,7 @@ const certs = [
     badge: '🌐',
     eliteBadge: false,
     verified: true,
-    credentialUrl: '#',
+    credentialUrl: '/Computer Networks And Internet Protocol.pdf',
     totalCertified: '6,290',
   },
   {
@@ -58,7 +58,7 @@ const certs = [
     badge: '🐍',
     eliteBadge: false,
     verified: true,
-    credentialUrl: '#',
+    credentialUrl: '/Moniba Technology.pdf',
     totalCertified: null,
   },
 ];
