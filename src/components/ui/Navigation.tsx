@@ -3,16 +3,12 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
   { label: 'About', href: '#about' },
-  { label: 'Education', href: '#education' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'AI Lab', href: '#ailab' },
-  { label: 'Terminal', href: '#terminal' },
   { label: 'Experience', href: '#experience' },
-  { label: 'Certs', href: '#certifications' },
+  { label: 'Projects', href: '#projects' },
   { label: 'Contact', href: '#contact' },
 ];
 
@@ -23,13 +19,13 @@ export default function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 20);
 
       // Active section detection
-      const sections = navLinks.map((l) => l.href.slice(1));
+      const sections = ['about', 'education', 'skills', 'projects', 'ailab', 'terminal', 'experience', 'certifications', 'contact'];
       for (const section of sections.reverse()) {
         const el = document.getElementById(section);
-        if (el && window.scrollY >= el.offsetTop - 100) {
+        if (el && window.scrollY >= el.offsetTop - 300) {
           setActiveSection(section);
           break;
         }
@@ -48,79 +44,93 @@ export default function Navigation() {
   };
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? 'glass border-b border-white/5 py-3' : 'py-5'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        {/* Logo */}
+    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4 pointer-events-none">
+      
+      {/* Desktop Floating Pill Nav */}
+      <motion.div 
+        className="pointer-events-auto hidden md:flex items-center justify-between gap-8 px-6 py-3 rounded-full bg-dark-900/40 border border-white/10 backdrop-blur-xl shadow-glow-sm transition-all duration-500"
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      >
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="relative group"
         >
-          <div className="w-10 h-10 rounded-xl overflow-hidden group-hover:shadow-glow transition-all duration-300">
-            <Image src="/assets/images/logo.svg" alt="AP Logo" width={40} height={40} className="w-full h-full" />
+          <div className="w-8 h-8 rounded-full overflow-hidden opacity-80 group-hover:opacity-100 transition-opacity">
+            <Image src="/assets/images/logo.svg" alt="AP Logo" width={32} height={32} className="w-full h-full object-cover" />
           </div>
         </button>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-1">
+        <div className="flex items-center gap-1">
           {navLinks.map((link) => (
             <button
               key={link.href}
               onClick={() => handleNavClick(link.href)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+              className={`relative px-4 py-1.5 rounded-full text-[13px] font-medium transition-colors duration-300 ${
                 activeSection === link.href.slice(1)
-                  ? 'text-brand-400 bg-brand-500/10' :'text-slate-400 hover:text-white hover:bg-white/5'
+                  ? 'text-white' : 'text-white/50 hover:text-white'
               }`}
             >
               {link.label}
+              {activeSection === link.href.slice(1) && (
+                <motion.div
+                  layoutId="nav-indicator"
+                  className="absolute inset-0 bg-white/10 rounded-full"
+                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                />
+              )}
             </button>
           ))}
         </div>
 
-        {/* CTA */}
-        <div className="hidden md:flex items-center gap-3">
-          <a
-            href="https://github.com/abhinashp25"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 rounded-lg glass neon-border text-sm font-medium text-slate-300 hover:text-white hover:shadow-glow transition-all duration-300"
-          >
-            GitHub
-          </a>
-        </div>
+        <a
+          href="https://github.com/abhinashp25"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-4 py-1.5 rounded-full bg-white text-dark-900 text-[13px] font-semibold hover:scale-105 active:scale-95 transition-transform"
+        >
+          GitHub
+        </a>
+      </motion.div>
 
-        {/* Mobile toggle */}
+      {/* Mobile Nav Top Bar */}
+      <div className={`pointer-events-auto md:hidden w-full flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 ${
+        scrolled ? 'bg-dark-900/60 backdrop-blur-xl border border-white/5' : ''
+      }`}>
+        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <Image src="/assets/images/logo.svg" alt="AP Logo" width={32} height={32} className="opacity-80" />
+        </button>
+
         <button
-          className="md:hidden p-2 rounded-lg glass"
+          className="p-2 text-white/70 hover:text-white transition-colors"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
-          {mobileOpen ? (
-            <XMarkIcon className="w-5 h-5 text-white" />
-          ) : (
-            <Bars3Icon className="w-5 h-5 text-white" />
-          )}
+          {mobileOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
         </button>
       </div>
 
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <div className="md:hidden glass border-t border-white/5 mt-2 mx-4 rounded-2xl p-4">
-          <div className="flex flex-col gap-1">
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="pointer-events-auto md:hidden absolute top-24 left-4 right-4 bg-dark-900/90 backdrop-blur-2xl border border-white/10 rounded-2xl p-4 shadow-2xl overflow-hidden flex flex-col gap-2"
+          >
             {navLinks.map((link) => (
               <button
                 key={link.href}
                 onClick={() => handleNavClick(link.href)}
-                className="px-4 py-3 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 text-left transition-all duration-200"
+                className="px-4 py-3 rounded-xl text-left text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 transition-colors"
               >
                 {link.label}
               </button>
             ))}
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

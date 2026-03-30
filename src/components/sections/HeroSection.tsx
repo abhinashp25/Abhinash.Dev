@@ -2,259 +2,133 @@
 
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDownIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
-import { useTypewriter } from '@/hooks/useTypewriter';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { useMousePosition } from '@/hooks/useMousePosition';
 import dynamic from 'next/dynamic';
 
 const ProfilePhoto = dynamic(() => import('@/components/ui/ProfilePhoto'), { ssr: false });
 
-const texts = [
-  'Full Stack Engineer',
-  'AI-Enabled Product Builder',
-  'From Data to Production Delivery',
-  'Open to Impact-Driven Roles',
-];
-
 const container = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    transition: { staggerChildren: 0.13, delayChildren: 0.35 },
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
   },
 };
 
 const item = {
-  hidden: { opacity: 0, y: 32, filter: 'blur(6px)' },
+  hidden: { opacity: 0, y: 20, filter: 'blur(10px)' },
   show: {
     opacity: 1, y: 0, filter: 'blur(0px)',
-    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 1, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
 export default function HeroSection() {
-  const { displayText, isTyping } = useTypewriter({ texts, typeSpeed: 70, deleteSpeed: 35, pauseDuration: 2200 });
   const { x, y } = useMousePosition();
   const heroRef = useRef<HTMLDivElement>(null);
 
-  const px = (x / (typeof window !== 'undefined' ? window.innerWidth : 1) - 0.5) * 18;
-  const py = (y / (typeof window !== 'undefined' ? window.innerHeight : 1) - 0.5) * 18;
+  // Subtle magnetic cursor effect calculation
+  const px = (x / (typeof window !== 'undefined' ? window.innerWidth : 1) - 0.5) * 50;
+  const py = (y / (typeof window !== 'undefined' ? window.innerHeight : 1) - 0.5) * 50;
 
   const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
   return (
-    <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-
-      {/* Ambient orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark-900">
+      
+      {/* High-end ambient background glow following cursor gently */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <motion.div
-          className="absolute w-[700px] h-[700px] rounded-full"
+          className="absolute w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] rounded-full opacity-30"
           style={{
-            background: 'radial-gradient(circle, #6366f130 0%, transparent 70%)',
-            top: '5%', left: '10%',
-            transform: `translate(${px * 0.25}px, ${py * 0.25}px)`,
+            background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%)',
+            top: '50%', left: '50%',
+            marginTop: '-400px', marginLeft: '-400px', // Center it
+            transform: `translate(${px}px, ${py}px)`,
           }}
-          initial={{ opacity: 0, scale: 0.6 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 2, ease: 'easeOut' }}
+          transition={{ type: 'spring', damping: 40, stiffness: 200 }}
         />
-        <motion.div
-          className="absolute w-[500px] h-[500px] rounded-full"
-          style={{
-            background: 'radial-gradient(circle, #06b6d420 0%, transparent 70%)',
-            bottom: '10%', right: '5%',
-            transform: `translate(${-px * 0.2}px, ${-py * 0.2}px)`,
-          }}
-          initial={{ opacity: 0, scale: 0.6 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 2, delay: 0.4, ease: 'easeOut' }}
-        />
-        <motion.div
-          className="absolute w-[300px] h-[300px] rounded-full"
-          style={{
-            background: 'radial-gradient(circle, #f472b618 0%, transparent 70%)',
-            top: '45%', right: '28%',
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 2, delay: 0.8 }}
-        />
-        <div className="absolute inset-0 grid-pattern opacity-20" />
+        {/* Subtle grid pattern barely visible */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_20%,transparent_100%)] opacity-50" />
       </div>
 
-      {/* Floating shapes */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[
-          { cls: 'w-14 h-14 border border-brand-500/30 rotate-45', style: { top: '14%', right: '9%' }, anim: 'animate-float' },
-          { cls: 'w-7 h-7 border border-cyber-500/40 rotate-12', style: { top: '72%', left: '7%' }, anim: 'animate-float-slow' },
-          { cls: 'w-10 h-10 border border-neon-500/30 rounded-full', style: { top: '28%', left: '4%' }, anim: 'animate-float-fast' },
-          { cls: 'w-5 h-5 bg-brand-500/20 rounded-sm rotate-45', style: { bottom: '22%', right: '18%' }, anim: 'animate-float' },
-        ].map((s, i) => (
-          <motion.div
-            key={i}
-            className={`absolute ${s.cls} ${s.anim}`}
-            style={s.style as React.CSSProperties}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 + i * 0.2, duration: 1 }}
-          />
-        ))}
-      </div>
-
-      {/* Main grid */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-20 w-full">
-        <div className="grid lg:grid-cols-[1.1fr_0.95fr] gap-10 items-start pt-8">
-
-          {/* ─── Left: Text ─── */}
-          <motion.div
-            variants={container}
-            initial="hidden"
-            animate="show"
-            className="space-y-7"
-          >
-            {/* Status badge */}
-            <motion.div variants={item}>
-              <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full glass neon-border">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
-                </span>
-                <span className="text-xs font-mono text-green-400 tracking-widest uppercase">
-                  Available for full-time roles
-                </span>
-              </div>
-            </motion.div>
-
-            {/* Name */}
-            <motion.div variants={item}>
-              <p className="text-cyber-400 font-mono text-sm tracking-[0.25em] uppercase mb-3">
-                Hello, I'm
-              </p>
-              <h1 className="text-5xl md:text-6xl lg:text-[4.5rem] font-bold text-white leading-[1.05] tracking-tight">
-                Abhinash
-                <br />
-                <span
-                  style={{
-                    background: 'linear-gradient(135deg, #6366f1 0%, #06b6d4 50%, #f472b6 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}
-                >
-                  Pradhan
-                </span>
-              </h1>
-            </motion.div>
-
-            {/* Typewriter */}
-            <motion.div variants={item} className="h-9 flex items-center gap-2">
-              <span className="w-1.5 h-7 rounded-full bg-brand-500 opacity-80" />
-              <span className="text-xl text-slate-300 font-mono">
-                {displayText}
-                <span
-                  className={`inline-block w-0.5 h-5 bg-cyber-400 ml-0.5 align-middle ${isTyping ? 'animate-blink' : 'opacity-0'}`}
-                />
-              </span>
-            </motion.div>
-
-            {/* Bio */}
-            <motion.p variants={item} className="text-slate-400 text-lg leading-relaxed max-w-[560px]">
-              I build production-ready applications that combine{' '}
-              <span className="text-brand-400 font-medium">modern full-stack engineering</span> with{' '}
-              <span className="text-cyber-400 font-medium">practical AI/ML</span> to deliver measurable business value.
-            </motion.p>
-
-            {/* Tech pills */}
-            <motion.div variants={item} className="flex flex-wrap gap-2">
-              {['TypeScript', 'Next.js', 'Node.js', 'Python', 'Applied ML'].map((t) => (
-                <motion.span
-                  key={t}
-                  whileHover={{ scale: 1.08, y: -2 }}
-                  className="px-3 py-1 rounded-full text-xs font-mono glass neon-border text-slate-300 hover:text-white hover:shadow-glow-cyan cursor-default transition-colors duration-300"
-                >
-                  {t}
-                </motion.span>
-              ))}
-            </motion.div>
-
-            {/* CTA Buttons */}
-            <motion.div variants={item} className="flex flex-wrap gap-4">
-              {/* View Projects */}
-              <motion.button
-                onClick={() => scrollTo('projects')}
-                whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(99,102,241,0.6)' }}
-                whileTap={{ scale: 0.97 }}
-                className="group relative px-7 py-3.5 rounded-xl font-semibold text-white overflow-hidden"
-                style={{ background: 'linear-gradient(135deg, #6366f1, #4f46e5)' }}
-              >
-                <span className="relative z-10 flex items-center gap-2">
-                  View Projects
-                  <ArrowDownIcon className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
-                </span>
-                <span className="absolute inset-0 bg-gradient-to-r from-brand-400 to-cyber-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </motion.button>
-
-              {/* Download Resume */}
-              <motion.a
-                href="/resume.pdf"
-                download="Abhinash_Pradhan_Resume.pdf"
-                whileHover={{ scale: 1.05, boxShadow: '0 0 25px rgba(6,182,212,0.4)' }}
-                whileTap={{ scale: 0.97 }}
-                className="group flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold glass neon-border text-slate-300 hover:text-white hover:shadow-glow-cyan transition-colors duration-300"
-              >
-                <ArrowDownTrayIcon className="w-4 h-4 text-cyber-400" />
-                Download Resume
-              </motion.a>
-            </motion.div>
-
-            {/* Quick info row */}
-            <motion.div variants={item} className="flex flex-wrap items-center gap-4">
-              <a
-                href="https://github.com/abhinashp25"
-                target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-xs font-mono text-slate-500 hover:text-brand-400 transition-colors"
-              >
-                <span style={{ color: '#6366f1' }}>▸</span> github.com/abhinashp25
-              </a>
-              <span className="text-slate-700">·</span>
-              <span className="flex items-center gap-1.5 text-xs font-mono text-slate-500">
-                <span style={{ color: '#06b6d4' }}>▸</span> Bhubaneswar, Odisha
-              </span>
-              <span className="text-slate-700">·</span>
-              <span className="flex items-center gap-1.5 text-xs font-mono text-slate-500">
-                <span style={{ color: '#f472b6' }}>▸</span> Full Stack + AI/ML
-              </span>
-            </motion.div>
-          </motion.div>
-
-          {/* ─── Right: Profile Photo ─── */}
-          <motion.div
-            className="hidden lg:flex items-start justify-center pt-4"
-            initial={{ opacity: 0, scale: 0.7, filter: 'blur(20px)' }}
-            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-            transition={{ duration: 1.4, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <ProfilePhoto />
-          </motion.div>
-        </div>
-
-        {/* Scroll cue */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full flex flex-col lg:flex-row items-center justify-between gap-12 pt-20">
+        
+        {/* Left: Typography Focus */}
         <motion.div
-          className="flex justify-center mt-16"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.8, duration: 1 }}
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="flex-1 space-y-8 max-w-2xl"
         >
-          <button
-            onClick={() => scrollTo('about')}
-            className="flex flex-col items-center gap-2 text-slate-500 hover:text-slate-300 transition-colors group"
-          >
-            <span className="text-[10px] font-mono tracking-widest uppercase">Scroll to explore</span>
-            <div className="w-6 h-10 rounded-full border border-slate-600 flex items-start justify-center p-1 group-hover:border-brand-500 transition-colors">
-              <div className="w-1 h-2 bg-brand-400 rounded-full animate-bounce-soft" />
+          {/* Subtle Availability Badge */}
+          <motion.div variants={item}>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-40" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-white opacity-70" />
+              </span>
+              <span className="text-[11px] font-medium text-white/70 tracking-wide uppercase">
+                Available for full-time roles
+              </span>
             </div>
-          </button>
+          </motion.div>
+
+          {/* Massive, clean headline */}
+          <motion.div variants={item} className="space-y-4">
+            <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-bold text-white leading-[1.05] tracking-tight">
+              Abhinash Pradhan.
+            </h1>
+            <h2 className="text-3xl md:text-5xl lg:text-[4rem] font-medium text-white/40 leading-[1.1] tracking-tight">
+              Crafting scalable systems & AI solutions.
+            </h2>
+          </motion.div>
+
+          {/* Refined Bio */}
+          <motion.p variants={item} className="text-white/50 text-lg md:text-xl leading-relaxed max-w-[500px] font-light">
+            I engineer production-grade applications that merge modern full-stack development with applied machine learning to solve complex problems and deliver exceptional user experiences.
+          </motion.p>
+
+          {/* Polished Call to action */}
+          <motion.div variants={item} className="pt-4 flex items-center gap-6">
+            <button
+              onClick={() => scrollTo('projects')}
+              className="group relative px-6 py-3 rounded-full bg-white text-dark-900 font-medium text-sm overflow-hidden transition-transform hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <span className="relative z-10 flex items-center gap-2">
+                Explore Work
+                <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </button>
+
+            <a
+              href="/resume.pdf"
+              download="Abhinash_Pradhan_Resume.pdf"
+              className="text-sm font-medium text-white/50 hover:text-white transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] auto-underline group"
+            >
+              View Resume
+              <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full" />
+            </a>
+          </motion.div>
         </motion.div>
+
+        {/* Right: Clean, un-cluttered Profile/3D Element */}
+        <motion.div
+          className="hidden lg:flex flex-1 justify-end opacity-80 mix-blend-lighten"
+          initial={{ opacity: 0, scale: 0.95, filter: 'blur(20px)' }}
+          animate={{ opacity: 0.8, scale: 1, filter: 'blur(0px)' }}
+          transition={{ duration: 1.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <div className="relative w-[450px] h-[450px] rounded-full flex items-center justify-center">
+            {/* Extremely subtle backdrop glow for the profile */}
+            <div className="absolute inset-0 rounded-full bg-white/5 blur-[80px]" />
+            <div className="relative z-10 w-full h-full">
+               <ProfilePhoto />
+            </div>
+          </div>
+        </motion.div>
+
       </div>
     </section>
   );

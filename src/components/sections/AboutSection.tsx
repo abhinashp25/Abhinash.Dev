@@ -11,7 +11,7 @@ const journey = [
     subtitle: 'The Beginning',
     description: 'Dove into Python programming, mastering fundamentals, data structures, and automation. Built small projects to solidify understanding.',
     icon: AcademicCapIcon,
-    color: '#6366f1',
+    color: '#ffffff',
     tags: ['Python', 'Algorithms', 'Automation'],
     size: 'col-span-2 row-span-1',
   },
@@ -21,7 +21,7 @@ const journey = [
     subtitle: 'AI Exploration',
     description: 'Built 5+ ML models solving real‑world problems. Explored scikit‑learn, pandas, and deep learning frameworks.',
     icon: CpuChipIcon,
-    color: '#06b6d4',
+    color: '#e2e8f0',
     tags: ['ML', 'TensorFlow', 'Pandas', 'scikit-learn'],
     size: 'col-span-1 row-span-2',
   },
@@ -31,7 +31,7 @@ const journey = [
     subtitle: 'Building Products',
     description: 'Mastered React, Node.js, and Express. Built complete web applications with real‑time features.',
     icon: CodeBracketIcon,
-    color: '#f472b6',
+    color: '#cbd5e1',
     tags: ['React', 'Node.js', 'Express', 'MongoDB'],
     size: 'col-span-1 row-span-1',
   },
@@ -41,16 +41,16 @@ const journey = [
     subtitle: 'Intelligent Systems',
     description: 'Combined web development with AI/ML to build intelligent applications. AI internship at OCAC Bhubaneswar — OCR, prediction models, data analytics dashboards.',
     icon: ChartBarIcon,
-    color: '#818cf8',
+    color: '#94a3b8',
     tags: ['OCR', 'Analytics', 'Streamlit', 'SQL'],
     size: 'col-span-2 row-span-1',
   },
 ];
 
 const stats = [
-  { label: 'Projects Built', value: 10, suffix: '+', color: '#6366f1' },
-  { label: 'ML Models', value: 5, suffix: '+', color: '#06b6d4' },
-  { label: 'Technologies', value: 15, suffix: '+', color: '#f472b6' },
+  { label: 'Projects Built', value: 10, suffix: '+', color: '#ffffff' },
+  { label: 'ML Models', value: 5, suffix: '+', color: '#e2e8f0' },
+  { label: 'Technologies', value: 15, suffix: '+', color: '#cbd5e1' },
 ];
 
 function CountUp({ to, suffix }: { to: number; suffix: string }) {
@@ -117,17 +117,17 @@ export default function AboutSection() {
           </div>
           <div className="space-y-4 text-slate-300 leading-relaxed">
             <p>
-              I am a <span className="text-brand-400 font-medium">full stack engineer</span> focused on building
+              I am a <span className="text-white font-medium">full stack engineer</span> focused on building
               reliable products from idea to deployment, with hands-on ownership across frontend, backend, and data workflows.
             </p>
             <p>
-              My core strength is combining <span className="text-neon-400 font-medium">application engineering</span>{' '}
-              with <span className="text-neon-400 font-medium">applied machine learning</span> to solve practical
+              My core strength is combining <span className="text-white font-medium">application engineering</span>{' '}
+              with <span className="text-white font-medium">applied machine learning</span> to solve practical
               business problems with measurable outcomes.
             </p>
             <p>
-              I currently work with <span className="text-cyber-400 font-medium">React/Next.js</span>,{' '}
-              <span className="text-cyber-400 font-medium">Node.js</span>, and Python ML tooling, and I prioritize
+              I currently work with <span className="text-white font-medium">React/Next.js</span>,{' '}
+              <span className="text-white font-medium">Node.js</span>, and Python ML tooling, and I prioritize
               clean architecture, maintainable code, and fast iteration.
             </p>
           </div>

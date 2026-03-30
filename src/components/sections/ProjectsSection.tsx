@@ -23,7 +23,7 @@ const projects: Project[] = [
     description: 'Deployed ML pipeline to predict invoice payment dates with 87% accuracy.',
     longDescription: 'Built a machine learning pipeline that analyzes historical invoice data to predict payment dates. Uses feature engineering on customer behavior, invoice amounts, and seasonal patterns. Achieved 87% accuracy using gradient boosting with XGBoost. Deployed as a REST API with Flask for real-time predictions.',
     tech: ['Python', 'scikit-learn', 'Pandas', 'XGBoost', 'Flask'],
-    color: '#6366f1',
+    color: '#ffffff',
     github: 'https://github.com/abhinashp25',
     category: 'Machine Learning',
     featured: true,
@@ -34,7 +34,7 @@ const projects: Project[] = [
     description: 'AI/ML system detecting plant diseases from leaf images using deep learning.',
     longDescription: 'An intelligent plant disease detection system that analyzes leaf images to identify diseases with high accuracy. Built using Convolutional Neural Networks (CNN) with transfer learning. Helps farmers and agricultural professionals quickly diagnose crop diseases. Trained on thousands of plant images across multiple disease categories.',
     tech: ['Python', 'TensorFlow', 'CNN', 'OpenCV', 'Deep Learning', 'Flask'],
-    color: '#4ade80',
+    color: '#cbd5e1',
     github: 'https://github.com/abhinashp25/Plant_Disease_Prediction',
     category: 'Computer Vision',
     featured: true,
@@ -45,7 +45,7 @@ const projects: Project[] = [
     description: 'Production-style real-time messaging platform with low-latency Socket events.',
     longDescription: 'A production-ready real-time chat application built with React and Socket.io. Features instant messaging, user authentication, room management, typing indicators, and a clean modern interface. Built for sub-100ms message delivery latency. Backend uses Node.js with Express and MongoDB for message persistence.',
     tech: ['React', 'Node.js', 'Socket.io', 'Express', 'MongoDB', 'JWT'],
-    color: '#818cf8',
+    color: '#94a3b8',
     github: 'https://github.com/abhinashp25/chatify',
     category: 'Full Stack',
     stats: 'Real-time',
@@ -55,7 +55,7 @@ const projects: Project[] = [
     description: 'Operational safety monitoring platform with live dashboards and alert workflows.',
     longDescription: 'Vigil is a full-stack web application for real-time safety monitoring and intelligent alerting. Built collaboratively with AI assistance, it features a React frontend with live dashboards, a Node.js/Express backend, and REST API integration. The platform monitors safety-critical events, processes incoming signals, and dispatches real-time alerts to users. Designed with a clean, responsive UI and robust backend architecture for reliable incident tracking and notification management.',
     tech: ['React', 'Node.js', 'Express', 'MongoDB', 'REST APIs', 'TypeScript'],
-    color: '#06b6d4',
+    color: '#e2e8f0',
     github: 'https://github.com/abhinashp25/vigil',
     category: 'Full Stack',
     featured: true,
@@ -66,12 +66,11 @@ const projects: Project[] = [
     description: 'Intelligent course recommendation system powered by collaborative filtering.',
     longDescription: 'A collaborative filtering and content-based recommendation engine for online courses. Analyzes user learning patterns, skill gaps, and course content to provide personalized recommendations. Built with Streamlit for rapid deployment. Uses NLP for course content analysis and similarity matching.',
     tech: ['Python', 'ML', 'Streamlit', 'NLP', 'Pandas', 'scikit-learn'],
-    color: '#f472b6',
+    color: '#64748b',
     github: 'https://github.com/abhinashp25',
     category: 'Recommendation System',
     stats: 'Personalized AI',
   },
-
 ];
 
 const categories = ['All', 'Machine Learning', 'Computer Vision', 'Full Stack', 'Recommendation System'];
@@ -224,8 +223,8 @@ export default function ProjectsSection() {
   return (
     <section id="projects" className="relative py-24 px-6 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] rounded-full opacity-5"
-          style={{ background: 'radial-gradient(circle, #f472b6 0%, transparent 70%)' }} />
+        <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] rounded-full opacity-[0.03]"
+          style={{ background: 'radial-gradient(circle, #ffffff 0%, transparent 70%)' }} />
       </div>
 
       <div className="max-w-6xl mx-auto">
@@ -234,11 +233,11 @@ export default function ProjectsSection() {
           initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.7 }}>
           <div className="flex items-center gap-3 mb-4">
-            <div className="h-px flex-1 max-w-12 bg-gradient-to-r from-transparent to-pink-500" />
-            <span className="text-pink-400 font-mono text-sm tracking-widest uppercase">Selected Work</span>
+            <div className="h-px flex-1 max-w-12 bg-gradient-to-r from-transparent to-white/50" />
+            <span className="text-white/60 font-mono text-sm tracking-widest uppercase">Selected Work</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-white">
-            Impact-Focused <span style={{ color: '#f472b6', textShadow: '0 0 20px rgba(244,114,182,0.5)' }}>Case Studies</span>
+            Impact-Focused <span style={{ color: '#ffffff', textShadow: '0 0 20px rgba(255,255,255,0.2)' }}>Case Studies</span>
           </h2>
           <p className="text-slate-400 mt-4 max-w-xl text-lg">
             A curated set of engineering and AI projects with measurable outcomes, architecture decisions, and delivery focus.
@@ -257,8 +256,8 @@ export default function ProjectsSection() {
               whileTap={{ scale: 0.97 }}
               className={`px-3 py-1.5 rounded-full text-xs font-mono transition-all duration-300 ${filter === cat ? 'text-white' : 'text-slate-400 hover:text-white'}`}
               style={{
-                background: filter === cat ? 'rgba(244,114,182,0.2)' : 'rgba(255,255,255,0.04)',
-                border: `1px solid ${filter === cat ? 'rgba(244,114,182,0.5)' : 'rgba(255,255,255,0.08)'}`,
+                background: filter === cat ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.04)',
+                border: `1px solid ${filter === cat ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.08)'}`,
               }}
             >
               {cat}
@@ -278,9 +277,9 @@ export default function ProjectsSection() {
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }}>
           {[
-            { label: 'Featured Projects', value: '5', color: '#6366f1' },
-            { label: 'Best Model Accuracy', value: '87%', color: '#06b6d4' },
-            { label: 'Tech Stack Breadth', value: '15+', color: '#f472b6' },
+            { label: 'Featured Projects', value: '5', color: '#ffffff' },
+            { label: 'Best Model Accuracy', value: '87%', color: '#e2e8f0' },
+            { label: 'Tech Stack Breadth', value: '15+', color: '#cbd5e1' },
           ].map((s) => (
             <div key={s.label} className="rounded-2xl p-4 text-center"
               style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${s.color}20` }}>
