@@ -105,10 +105,12 @@ export default function HeroSection() {
             <a
               href="/resume.pdf"
               download="Abhinash_Pradhan_Resume.pdf"
-              className="text-sm font-medium text-white/50 hover:text-white transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] auto-underline group"
+              className="group relative px-6 py-3 rounded-full border border-white/20 bg-transparent text-white font-medium text-sm transition-all hover:bg-white/10 hover:border-white/40 active:scale-[0.98] flex items-center gap-2"
             >
-              View Resume
-              <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full" />
+              <svg className="w-4 h-4 text-white/70 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              </svg>
+              Download Resume
             </a>
           </motion.div>
         </motion.div>

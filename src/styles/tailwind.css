@@ -28,6 +28,10 @@ body {
   overflow-x: hidden;
 }
 
+@media (min-width: 768px) {
+  * { cursor: none !important; }
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

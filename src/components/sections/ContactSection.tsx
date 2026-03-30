@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { EnvelopeIcon, CodeBracketIcon, UserIcon } from '@heroicons/react/24/outline';
+import { supabase } from '@/lib/supabase';
 
 export default function ContactSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -30,7 +31,7 @@ export default function ContactSection() {
     return newErrors;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) {
@@ -40,17 +41,27 @@ export default function ContactSection() {
     setErrors({});
     setIsSubmitting(true);
 
-    const subject = encodeURIComponent('Portfolio Contact from ' + form.name);
-    const body = encodeURIComponent(
-      'Hi Abhinash,\n\nName: ' + form.name + '\nEmail: ' + form.email + '\n\nMessage:\n' + form.message
-    );
-    window.open('mailto:abhinashpradhan7658@gmail.com?subject=' + subject + '&body=' + body, '_blank');
+    try {
+      // Create 'contacts' table in your Supabase project with columns: id (uuid), name (text), email (text), message (text), created_at (timestamp)
+      const { error } = await supabase
+        .from('contacts')
+        .insert([{ name: form.name, email: form.email, message: form.message }]);
 
-    setTimeout(() => {
-      setIsSubmitting(false);
+      if (error) throw error;
+      
       setSubmitted(true);
       setForm({ name: '', email: '', message: '' });
-    }, 800);
+    } catch (err) {
+      console.error('Error submitting form to Supabase:', err);
+      // Fallback to mailto just in case table not created
+      const subject = encodeURIComponent('Portfolio Contact from ' + form.name);
+      const body = encodeURIComponent('Hi Abhinash,\n\nName: ' + form.name + '\nEmail: ' + form.email + '\n\nMessage:\n' + form.message);
+      window.open('mailto:abhinashpradhan7658@gmail.com?subject=' + subject + '&body=' + body, '_blank');
+      setSubmitted(true);
+      setForm({ name: '', email: '', message: '' });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const socialLinks = [
@@ -108,10 +119,7 @@ export default function ContactSection() {
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-2">Message Sent!</h3>
                 <p className="text-slate-400 text-sm max-w-xs">
-                  Your email client should have opened. If not, reach me directly at{' '}
-                  <a href="mailto:abhinashpradhan7658@gmail.com" className="text-brand-400 hover:underline">
-                    abhinashpradhan7658@gmail.com
-                  </a>
+                  Your message has been successfully relayed to my database. I will contact you shortly!
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
@@ -206,7 +214,7 @@ export default function ContactSection() {
                   {isSubmitting ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Opening email client...
+                      Sending...
                     </>
                   ) : (
                     <>

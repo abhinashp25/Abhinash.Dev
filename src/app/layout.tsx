@@ -1,8 +1,22 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
 import '../styles/index.css';
 import '../styles/tailwind.css';
 import { Toaster } from 'react-hot-toast';
+import CustomCursor from '@/components/ui/CustomCursor';
+
+
+const jakarta = Plus_Jakarta_Sans({ 
+  subsets: ['latin'], 
+  variable: '--font-jakarta' 
+});
+
+const jetbrains = JetBrains_Mono({ 
+  subsets: ['latin'], 
+  variable: '--font-jetbrains' 
+});
+
 
 export const metadata: Metadata = {
   title: 'Abhinash Pradhan | Full Stack Developer & AI/ML Enthusiast',
@@ -16,17 +30,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-
-      <body className="bg-dark-900 text-slate-200 font-jakarta antialiased overflow-x-hidden">
+    <html lang="en" className={`scroll-smooth ${jakarta.variable} ${jetbrains.variable}`}>
+      <body className="bg-dark-900 text-slate-200 font-sans antialiased overflow-x-hidden">
+        <CustomCursor />
         {children}
         <Toaster
           position="bottom-left"

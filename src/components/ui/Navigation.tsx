@@ -57,8 +57,9 @@ export default function Navigation() {
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="relative group"
         >
-          <div className="w-8 h-8 rounded-full overflow-hidden opacity-80 group-hover:opacity-100 transition-opacity">
-            <Image src="/assets/images/logo.svg" alt="AP Logo" width={32} height={32} className="w-full h-full object-cover" />
+          <div className="flex items-center gap-0.5">
+            <span className="text-xl font-bold tracking-tight text-white">ABHINASH</span>
+            <span className="text-xl font-black text-indigo-500">.</span>
           </div>
         </button>
 
@@ -98,8 +99,9 @@ export default function Navigation() {
       <div className={`pointer-events-auto md:hidden w-full flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 ${
         scrolled ? 'bg-dark-900/60 backdrop-blur-xl border border-white/5' : ''
       }`}>
-        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <Image src="/assets/images/logo.svg" alt="AP Logo" width={32} height={32} className="opacity-80" />
+        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-0.5">
+          <span className="text-xl font-bold tracking-tight text-white">ABHINASH</span>
+          <span className="text-xl font-black text-indigo-500">.</span>
         </button>
 
         <button
