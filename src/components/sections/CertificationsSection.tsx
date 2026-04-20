@@ -61,6 +61,44 @@ const certs = [
     credentialUrl: '/Moniba Technology.pdf',
     totalCertified: null,
   },
+  {
+    title: 'Data Analytics Job Simulation',
+    issuer: 'Deloitte Australia',
+    issuerFull: 'Deloitte Australia Technology Virtual Experience Program via Forage',
+    period: '2024',
+    duration: 'Virtual Experience',
+    score: null,
+    scoreDetail: null,
+    rollNo: 'Forage-Deloitte-2024',
+    coordinator: 'Deloitte Virtual Experience Program',
+    description: 'Completed a practical job simulation focusing on Data Analytics. Advised a hypothetical client by cleaning, modeling, and analyzing diverse datasets. Built scalable dashboards to uncover actionable insights regarding content trends and user engagement.',
+    skills: ['Data Analytics', 'Data Cleaning', 'Data Modeling', 'Data Visualization', 'Business Insights'],
+    color: '#86bc25', // Deloitte Green
+    badge: '📊',
+    eliteBadge: false,
+    verified: true,
+    credentialUrl: '/Data Analytics Job Simulation certificate.pdf',
+    totalCertified: null,
+  },
+  {
+    title: 'AI / ML Internship Certification',
+    issuer: 'OCAC Bhubaneswar',
+    issuerFull: 'Odisha Computer Application Centre',
+    period: '2024',
+    duration: 'Internship Program',
+    score: null,
+    scoreDetail: null,
+    rollNo: '2024-OCAC-AIML',
+    coordinator: 'OCAC Training Division',
+    description: 'Earned certification for successfully completing an AI/ML internship. Designed and deployed predictive models and OCR-driven document pipelines tailored for public-sector digital workflows, translating technical architecture into operational value.',
+    skills: ['AI/ML', 'OCR', 'Computer Vision', 'Deep Learning', 'Predictive Modeling'],
+    color: '#8b5cf6',
+    badge: '🤖',
+    eliteBadge: false,
+    verified: true,
+    credentialUrl: '/ai internship certificate.jpeg',
+    totalCertified: null,
+  },
 ];
 
 export default function CertificationsSection() {
@@ -183,28 +221,6 @@ export default function CertificationsSection() {
 
                   <p className="text-slate-400 text-xs leading-relaxed mb-4 flex-1">{cert.description}</p>
 
-                  {/* Score bar */}
-                  {cert.score && (
-                    <div className="mb-4 p-3 rounded-xl" style={{ background: `${cert.color}08`, border: `1px solid ${cert.color}20` }}>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-xs font-mono text-slate-500">Consolidated Score</span>
-                        <span className="text-sm font-bold font-mono" style={{ color: cert.color }}>{cert.score}</span>
-                      </div>
-                      {/* Score progress bar */}
-                      <div className="h-1 bg-dark-700 rounded-full overflow-hidden mb-1.5">
-                        <motion.div
-                          className="h-full rounded-full"
-                          style={{ background: `linear-gradient(90deg, ${cert.color}, ${cert.color}80)` }}
-                          initial={{ width: 0 }}
-                          whileInView={{ width: cert.score }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 1.2, delay: i * 0.12 + 0.4, ease: 'easeOut' }}
-                        />
-                      </div>
-                      <p className="text-[10px] font-mono text-slate-600">{cert.scoreDetail}</p>
-                    </div>
-                  )}
-
                   {/* Skills */}
                   <div className="flex flex-wrap gap-1.5 mb-4">
                     {cert.skills.map((skill) => (
@@ -221,7 +237,10 @@ export default function CertificationsSection() {
                       <p className="text-[9px] font-mono text-slate-700 uppercase tracking-wider">Roll / Cert ID</p>
                       <p className="text-[10px] font-mono text-slate-500 mt-0.5">{cert.rollNo}</p>
                     </div>
-                    <a href={cert.credentialUrl}
+                    <a 
+                      href={cert.credentialUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex items-center gap-1 text-[10px] font-mono transition-colors group/link"
                       style={{ color: cert.color }}>
                       <span className="group-hover/link:underline">Verify</span>

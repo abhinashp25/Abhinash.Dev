@@ -117,9 +117,9 @@ export default function HeroSection() {
 
         {/* Right: Clean, un-cluttered Profile/3D Element */}
         <motion.div
-          className="hidden lg:flex flex-1 justify-end opacity-80 mix-blend-lighten"
+          className="hidden lg:flex flex-1 justify-end opacity-90"
           initial={{ opacity: 0, scale: 0.95, filter: 'blur(20px)' }}
-          animate={{ opacity: 0.8, scale: 1, filter: 'blur(0px)' }}
+          animate={{ opacity: 0.9, scale: 1, filter: 'blur(0px)' }}
           transition={{ duration: 1.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="relative w-[450px] h-[450px] rounded-full flex items-center justify-center">

@@ -149,6 +149,7 @@ function ProjectCard({ project, index, onClick }: { project: Project; index: num
           border: `1px solid ${hovered ? project.color + '50' : project.color + '20'}`,
           boxShadow: hovered ? `0 0 40px ${project.color}20, 0 20px 60px rgba(0,0,0,0.4)` : 'none',
           transition: 'border-color 0.3s, box-shadow 0.3s',
+          cursor: 'pointer',
         }}
       >
         {/* Top accent line */}
@@ -305,9 +306,9 @@ export default function ProjectsSection() {
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }}>
           {[
-            { label: 'Featured Projects', value: '5', color: '#ffffff' },
-            { label: 'Best Model Accuracy', value: '87%', color: '#e2e8f0' },
-            { label: 'Tech Stack Breadth', value: '15+', color: '#cbd5e1' },
+            { label: 'Shipped Applications', value: '5+', color: '#ffffff' },
+            { label: 'Peak ML Accuracy', value: '98%', color: '#e2e8f0' },
+            { label: 'Real-Time Latency', value: '<100ms', color: '#cbd5e1' },
           ].map((s) => (
             <div key={s.label} className="rounded-2xl p-4 text-center"
               style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${s.color}20` }}>

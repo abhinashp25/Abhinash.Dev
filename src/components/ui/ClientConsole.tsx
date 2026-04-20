@@ -1,53 +1,62 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function ClientConsole() {
+  const isLogged = useRef(false);
+
   useEffect(() => {
-    // Only run in the browser
-    if (typeof window === 'undefined') return;
+    // Prevent running multiple times in StrictMode or SSR
+    if (typeof window === 'undefined' || isLogged.current) return;
+    isLogged.current = true;
 
-    // Prevent running multiple times in StrictMode
-    if ((window as any)._consoleLogged) return;
-    (window as any)._consoleLogged = true;
-
-    const style1 = [
+    const mainHeaderStyle = [
       'color: #ffffff',
-      'background: #0f172a',
+      'background: #050505',
       'font-size: 24px',
-      'font-weight: bold',
+      'font-weight: 800',
       'padding: 20px 40px',
-      'border-radius: 8px',
-      'border: 1px solid #6366f1',
-      'text-shadow: 0 0 10px rgba(99, 102, 241, 0.5)',
-      'font-family: inherit'
+      'border-radius: 12px',
+      'border: 1px solid rgba(255,255,255,0.1)',
+      'text-shadow: 0 0 20px rgba(255, 255, 255, 0.5)',
+      'font-family: Inter, system-ui, sans-serif'
     ].join(';');
 
-    const style2 = [
-      'color: #94a3b8',
+    const subtitleStyle = [
+      'color: #a1a1aa',
       'font-size: 14px',
       'padding: 10px 0',
-      'font-family: monospace'
+      'font-family: monospace',
+      'line-height: 1.6'
     ].join(';');
 
-    const style3 = [
+    const linkStyle = [
       'color: #38bdf8',
       'font-size: 14px',
-      'font-weight: bold',
+      'font-weight: 600',
       'padding: 5px 0',
       'font-family: monospace'
     ].join(';');
 
-    console.log('%c👋 Hello there, fellow developer!', style1);
-    console.log(
-      '%cIt looks like you enjoy inspecting code.\nI engineered this portfolio with Next.js, Framer Motion, and Tailwind CSS.\nClean architecture and attention to detail are my priorities.',
-      style2
-    );
-    console.log(
-      '%cLooking for a versatile Full Stack / AI Engineer?\nLet\'s connect! https://github.com/abhinashp25',
-      style3
-    );
+    const asciiArt = `
+    █████╗ ██████╗ ██╗  ██╗██╗███╗   ██╗ █████╗ ███████╗██╗  ██╗
+   ██╔══██╗██╔══██╗██║  ██║██║████╗  ██║██╔══██╗██╔════╝██║  ██║
+   ███████║██████╔╝███████║██║██╔██╗ ██║███████║███████╗███████║
+   ██╔══██║██╔══██╗██╔══██║██║██║╚██╗██║██╔══██║╚════██║██╔══██║
+   ██║  ██║██████╔╝██║  ██║██║██║ ╚████║██║  ██║███████║██║  ██║
+   ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
+    `;
 
+    console.log('%c' + asciiArt, 'color: #38bdf8; font-weight: bold; font-family: monospace;');
+    console.log('%c👋 Hello there, fellow developer!', mainHeaderStyle);
+    console.log(
+      '%cIt looks like you enjoy inspecting code as much as I do.\n\nI engineered this portfolio from the ground up using:\n⚡ Next.js 14 (App Router)  \n🎨 Tailwind CSS & Framer Motion \n🤖 Integrated AI endpoints',
+      subtitleStyle
+    );
+    console.log(
+      '%cIf you are looking for a versatile Full Stack Developer & AI Engineer who ships scalable, production-grade applications, let\'s connect!\n\nEmail  : abhinashpradhan7658@gmail.com\nGitHub : https://github.com/abhinashp25\nLinkedIn : https://www.linkedin.com/in/abhinash-pradhan-74b389294/',
+      linkStyle
+    );
   }, []);
 
   return null;
