@@ -88,9 +88,20 @@ function fallbackStream(): NextResponse {
   return new NextResponse(stream, { headers: sseHeaders });
 }
 
+interface ChatRequest {
+  provider?: string;
+  model?: string;
+  messages?: any[];
+  stream?: boolean;
+  parameters?: {
+    max_tokens?: number;
+    temperature?: number;
+  };
+}
+
 // ─── POST handler ─────────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
-  let body: any;
+  let body: ChatRequest;
   try {
     body = await req.json();
   } catch {
@@ -136,8 +147,9 @@ export async function POST(req: NextRequest) {
         ...params,
         stream: true,
       })) as AsyncIterable<any>;
-    } catch (err: any) {
-      console.error(`[${P}] Stream setup failed:`, err?.message ?? err);
+    } catch (err: unknown) {
+      const errorMsg = err instanceof Error ? err.message : String(err);
+      console.error(`[${P}] Stream setup failed:`, errorMsg);
       return fallbackStream();
     }
 
@@ -148,12 +160,16 @@ export async function POST(req: NextRequest) {
           for await (const chunk of openaiStream) {
             ctrl.enqueue(sse({ type: 'chunk', chunk }));
           }
-        } catch (err: any) {
-          console.error(`[${P}] Mid-stream error:`, err?.message ?? err);
+        } catch (err: unknown) {
+          const errorMsg = err instanceof Error ? err.message : String(err);
+          console.error(`[${P}] Mid-stream error:`, errorMsg);
         }
         ctrl.enqueue(sse({ type: 'done' }));
         ctrl.close();
       },
+      cancel() {
+        console.warn(`[${P}] Client cancelled stream.`);
+      }
     });
 
     return new NextResponse(readable, { headers: sseHeaders });
@@ -163,8 +179,9 @@ export async function POST(req: NextRequest) {
   try {
     const result = await client.chat.completions.create({ ...params, stream: false });
     return NextResponse.json(result);
-  } catch (err: any) {
-    console.error(`[${P}] Non-stream error:`, err?.message ?? err);
+  } catch (err: unknown) {
+    const errorMsg = err instanceof Error ? err.message : String(err);
+    console.error(`[${P}] Non-stream error:`, errorMsg);
     return NextResponse.json(
       {
         choices: [{

@@ -6,14 +6,20 @@ export async function callAIEndpoint(endpoint: string, payload: object) {
       body: JSON.stringify(payload),
     });
 
-    const data = await response.json();
+    const contentType = response.headers.get('content-type');
+    let data = {};
+    if (contentType && contentType.includes('application/json')) {
+      data = await response.json();
+    } else if (!response.ok) {
+      throw new Error(`Request failed with status: ${response.status}`);
+    }
 
-    if (!response.ok || data.error) {
+    if (!response.ok || (data as any).error) {
       console.error('API Route Error:', {
-        error: data.error,
-        details: data.details,
+        error: (data as any).error,
+        details: (data as any).details,
       });
-      throw new Error(data.error || `Request failed: ${response.status}`);
+      throw new Error((data as any).error || `Request failed: ${response.status}`);
     }
 
     return data;

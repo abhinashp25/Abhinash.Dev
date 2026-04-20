@@ -23,7 +23,7 @@ export default function Home() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoaded(true), 2200);
+    const timer = setTimeout(() => setLoaded(true), 500); // Reduced delay for faster initial load
     return () => clearTimeout(timer);
   }, []);
 
@@ -36,12 +36,12 @@ export default function Home() {
       <div className={`transition-opacity duration-1000 ${loaded ? 'opacity-100' : 'opacity-0'}`}>
         <HeroSection />
         <AboutSection />
-        <EducationSection />
+        <ExperienceSection />
         <SkillsSection />
         <ProjectsSection />
         <AILabSection />
         <TerminalSection />
-        <ExperienceSection />
+        <EducationSection />
         <CertificationsSection />
         <ContactSection />
         <Footer />

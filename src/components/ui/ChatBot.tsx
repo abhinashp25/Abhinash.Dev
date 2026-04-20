@@ -55,7 +55,6 @@ export default function ChatBot() {
     },
   ]);
   const [input, setInput] = useState('');
-  const [activeProvider, setActiveProvider] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const streamingMsgRef = useRef<boolean>(false);
@@ -143,13 +142,10 @@ export default function ChatBot() {
       <button
         id="chatbot-toggle"
         onClick={() => (isOpen ? setIsOpen(false) : handleOpen())}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 group"
-        style={{
-          background: 'rgba(15, 15, 15, 0.85)',
-          border: '1px solid rgba(255,255,255,0.15)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05) inset',
-          backdropFilter: 'blur(24px)',
-        }}
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 group
+          bg-[rgba(15,15,15,0.85)] border border-[rgba(255,255,255,0.15)]
+          shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_0_0_1px_rgba(255,255,255,0.05)]
+          backdrop-blur-[24px]"
         aria-label="Toggle AI Assistant"
       >
         {isOpen ? (
@@ -166,20 +162,14 @@ export default function ChatBot() {
       <div
         className={`fixed bottom-24 right-6 z-50 w-[360px] md:w-[400px] rounded-[20px] overflow-hidden
           transition-all duration-300 ease-out origin-bottom-right
+          bg-[rgba(8,8,8,0.92)] border border-[rgba(255,255,255,0.09)]
+          shadow-[0_24px_80px_rgba(0,0,0,0.7),inset_0_0_0_1px_rgba(255,255,255,0.04)]
+          backdrop-blur-[40px] backdrop-saturate-[1.8]
           ${isOpen ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto' : 'opacity-0 scale-95 translate-y-6 pointer-events-none'}`}
-        style={{
-          background: 'rgba(8, 8, 8, 0.92)',
-          border: '1px solid rgba(255,255,255,0.09)',
-          boxShadow: '0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04) inset',
-          backdropFilter: 'blur(40px) saturate(180%)',
-        }}
       >
         {/* Header */}
-        <div className="px-5 py-3.5 flex items-center gap-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-          <div
-            className="w-9 h-9 rounded-xl flex items-center justify-center"
-            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}
-          >
+        <div className="px-5 py-3.5 flex items-center gap-3 border-b border-[rgba(255,255,255,0.06)]">
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)]">
             <SparklesIcon className="w-4 h-4 text-white/80" />
           </div>
           <div className="flex-1 min-w-0">
