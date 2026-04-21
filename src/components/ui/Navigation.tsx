@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -12,26 +12,20 @@ const navLinks = [
 ];
 
 export default function Navigation() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  // 🔥 Smooth Scroll + Active Section Detection
+  const navRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [pill, setPill] = useState({ left: 0, width: 0 });
+
+  // Smooth active section detection
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 40);
 
-      const sections = [
-        'about',
-        'experience',
-        'skills',
-        'projects',
-        'ailab',
-        'terminal',
-        'education',
-        'certifications',
-        'contact',
-      ];
+      const sections = ['about', 'experience', 'projects', 'contact'];
 
       let current = '';
 
@@ -41,7 +35,10 @@ export default function Navigation() {
 
         const rect = el.getBoundingClientRect();
 
-        if (rect.top <= window.innerHeight * 0.4 && rect.bottom >= window.innerHeight * 0.4) {
+        if (
+          rect.top <= window.innerHeight * 0.4 &&
+          rect.bottom >= window.innerHeight * 0.4
+        ) {
           current = section;
           break;
         }
@@ -56,17 +53,38 @@ export default function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 🔥 Apple-like smooth scroll with offset fix
+  //Move pill smoothly
+  useEffect(() => {
+    const index = navLinks.findIndex(
+      (link) => link.href.slice(1) === activeSection
+    );
+
+    const el = itemRefs.current[index];
+    const parent = navRef.current;
+
+    if (el && parent) {
+      const elRect = el.getBoundingClientRect();
+      const parentRect = parent.getBoundingClientRect();
+
+      setPill({
+        left: elRect.left - parentRect.left,
+        width: elRect.width,
+      });
+    }
+  }, [activeSection]);
+
+  // 🔥 Smooth scroll with offset
   const handleNavClick = (href: string) => {
     setMobileOpen(false);
 
     const el = document.querySelector(href);
     if (!el) return;
 
-    const yOffset = -80; // navbar offset
+    const yOffset = -80;
+
     const y =
       (el as HTMLElement).getBoundingClientRect().top +
-      window.pageYOffset +
+      window.scrollY +
       yOffset;
 
     window.scrollTo({
@@ -77,8 +95,8 @@ export default function Navigation() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4 pointer-events-none">
-
-      {/* 🔥 Desktop Nav */}
+      
+      {/* Desktop Nav */}
       <motion.div
         className={`pointer-events-auto hidden md:flex items-center justify-between gap-8 px-6 rounded-full border backdrop-blur-2xl transition-all duration-500 ${
           scrolled
@@ -102,33 +120,41 @@ export default function Navigation() {
           </span>
         </button>
 
-        {/* Nav Links */}
-        <div className="flex items-center gap-1 relative">
-          {navLinks.map((link) => {
+        {/* NAV LINKS */}
+        <div ref={navRef} className="relative flex items-center gap-1">
+
+          {/* SINGLE MOVING PILL */}
+          <motion.div
+            animate={{
+              left: pill.left,
+              width: pill.width,
+            }}
+            transition={{
+              type: 'spring',
+              stiffness: 280,
+              damping: 25,
+              mass: 0.8,
+            }}
+            className="absolute top-0 bottom-0 rounded-full bg-white/10 border border-white/10 backdrop-blur-md"
+          />
+
+          {navLinks.map((link, index) => {
             const isActive = activeSection === link.href.slice(1);
 
             return (
               <button
                 key={link.href}
+                ref={(el) => {
+                  itemRefs.current[index] = el;
+                }}
                 onClick={() => handleNavClick(link.href)}
-                className="relative px-4 py-1.5 text-[13px] font-medium text-white/60 hover:text-white transition-colors duration-300"
+                className={`relative z-10 px-4 py-1.5 text-[13px] font-medium transition-all duration-300 ${
+                  isActive
+                    ? 'text-white'
+                    : 'text-white/60 hover:text-white'
+                }`}
               >
-                {isActive && (
-                  <motion.div
-                    layoutId="nav-pill"
-                    className="absolute inset-0 rounded-full bg-white/10 backdrop-blur-md border border-white/10"
-                    transition={{
-                      type: 'spring',
-                      stiffness: 350,
-                      damping: 30,
-                    }}
-                  />
-                )}
-
-                <span className="relative z-10">{link.label}</span>
-
-                {/* 🔥 Hover glow */}
-                <span className="absolute inset-0 rounded-full opacity-0 hover:opacity-100 transition duration-300 bg-white/5 blur-md"></span>
+                {link.label}
               </button>
             );
           })}
@@ -139,13 +165,13 @@ export default function Navigation() {
           href="https://github.com/abhinashp25"
           target="_blank"
           rel="noopener noreferrer"
-          className="px-4 py-1.5 rounded-full bg-white text-black text-[13px] font-semibold hover:scale-105 active:scale-95 transition-all duration-300 shadow-md"
+          className="px-4 py-1.5 rounded-full bg-white text-black text-[13px] font-semibold hover:scale-105 active:scale-95 transition-all duration-300"
         >
           GitHub
         </a>
       </motion.div>
 
-      {/* 🔥 Mobile Nav */}
+      {/* Mobile Nav */}
       <div
         className={`pointer-events-auto md:hidden w-full flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 ${
           scrolled
@@ -164,7 +190,7 @@ export default function Navigation() {
         </button>
       </div>
 
-      {/* 🔥 Mobile Menu */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
